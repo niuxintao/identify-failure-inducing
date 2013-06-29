@@ -222,6 +222,43 @@ public class TuplePool {
 		return root;
 	}
 
+	public List<Tuple> getPaths(Tuple candidateBug) {
+		List<Tuple> result = new ArrayList<Tuple>();
+		List<Tuple> heads = this.getCandidateBugHeads();
+		List<Tuple> childs = candidateBug.getChildTuplesByDegree(candidateBug.getDegree() - 1);
+		List<Tuple> candidateHeads = new ArrayList<Tuple>();
+		for (Tuple child : childs) {
+			boolean containFlag = false;
+			for (Tuple bug : heads) {
+				if (bug.contains(child) || bug.equals(child)) {
+					containFlag = true;
+					break;
+				}
+			}
+			if (containFlag) {
+				candidateHeads.add(child);
+			}
+		}
+		List<Tuple> tails = this.getCandidateRightTails();
+		
+		Tuple canHead = null;
+		Tuple canTail = null;
+		int max = -1;
+		for (Tuple head : candidateHeads) {
+			for (Tuple tail : tails) {
+				int size = lenBetween(head, tail);
+				if (size > max) {
+					max = size;
+					canHead = head;
+					canTail = tail;
+				}
+			}
+		}
+		result = this.getLongestPath(canHead, canTail);
+		return result;
+
+	}
+
 	public List<Tuple> getExistedBugTuples() {
 		return existedBugTuples;
 	}
