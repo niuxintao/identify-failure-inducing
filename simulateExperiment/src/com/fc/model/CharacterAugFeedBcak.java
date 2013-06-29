@@ -42,7 +42,7 @@ public class CharacterAugFeedBcak {
 				}
 			}
 			if (flag) {
-				System.out.println("break");
+			//	System.out.println("break");
 				break;
 			}
 
@@ -65,9 +65,9 @@ public class CharacterAugFeedBcak {
 		for (int i = 0; i < workMachine.getExtraCases().getTestCaseNum(); i++)
 			testCases.add(workMachine.getExtraCases().getAt(i));
 
-		System.out.println("run import begin");
+		//System.out.println("run import begin");
 		runImportBugs(workMachine, generate, caseRunner);
-		System.out.println("run import end");
+		//System.out.println("run import end");
 
 	}
 

@@ -18,6 +18,7 @@ public class FeedBackProcess {
 	protected CaseRunner caseRunner;
 	protected CorpTupleWithTestCase generate;
 	protected TuplePool pool;
+	protected CharacterFeedBack fb;
 
 	public FeedBackProcess(TestCase wrongCase, CaseRunner caseRunner, int[] param,
 			TestSuite rightSuite) {
@@ -29,12 +30,16 @@ public class FeedBackProcess {
 	public void testWorkFlow() {
 
 		Chain workMachine = new Chain(pool, generate);
-		CharacterFeedBack fb = new CharacterFeedBack();
+		fb = new CharacterFeedBack();
 		fb.process(workMachine, caseRunner, generate);
-		outputResult(fb);
+	//	outputResult(fb);
 	}
 
-	private void outputResult(CharacterFeedBack fb) {
+	public CharacterFeedBack getFb() {
+		return fb;
+	}
+
+	public void outputResult(CharacterFeedBack fb) {
 		System.out.println("begin");
 		List<Tuple> bugs = fb.getBugs();
 		for (Tuple bug : bugs) {

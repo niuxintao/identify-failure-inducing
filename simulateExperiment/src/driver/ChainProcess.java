@@ -17,17 +17,23 @@ public class ChainProcess {
 	protected CaseRunner caseRunner;
 	protected CorpTupleWithTestCase generate;
 	protected TuplePool pool;
+	protected Chain workMachine;
 
-	public ChainProcess(TestCase wrongCase, CaseRunner caseRunner, int[] param , TestSuite rightSuite) {
+	public Chain getWorkMachine() {
+		return workMachine;
+	}
+
+	public ChainProcess(TestCase wrongCase, CaseRunner caseRunner, int[] param,
+			TestSuite rightSuite) {
 		this.caseRunner = caseRunner;
 		pool = new TuplePool(wrongCase, rightSuite);
 		generate = new CorpTupleWithTestCase(wrongCase, param);
 	}
 
 	public void testWorkFlow() {
-		Chain workMachine = new Chain(pool, generate);
+		workMachine = new Chain(pool, generate);
 		character(workMachine);
-		outputResult(workMachine);
+		// outputResult(workMachine);
 	}
 
 	private void character(Chain workMachine) {
@@ -40,7 +46,7 @@ public class ChainProcess {
 		}
 	}
 
-	private void outputResult(Chain workMachine) {
+	public void outputResult(Chain workMachine) {
 		System.out.println("begin");
 		List<Tuple> bugs = workMachine.getPool().getExistedBugTuples();
 		for (Tuple bug : bugs) {
@@ -124,8 +130,9 @@ public class ChainProcess {
 
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel);
-	//	((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
-		ChainProcess test = new ChainProcess(wrongCase, caseRunner, param, rightSuite);
+		((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
+		ChainProcess test = new ChainProcess(wrongCase, caseRunner, param,
+				rightSuite);
 		test.testWorkFlow();
 	}
 }

@@ -9,6 +9,7 @@ import com.fc.model.FIC;
 import com.fc.model.IterAIFL;
 import com.fc.model.OFOT;
 import com.fc.model.RI;
+import com.fc.model.SpectrumBased;
 import com.fc.testObject.TestCase;
 import com.fc.testObject.TestCaseImplement;
 import com.fc.testObject.TestSuite;
@@ -16,7 +17,9 @@ import com.fc.testObject.TestSuiteImplement;
 import com.fc.tuple.CorpTupleWithTestCase;
 import com.fc.tuple.Tuple;
 
+import driver.ChainAugProcess;
 import driver.ChainProcess;
+import driver.FeedBackAugProcess;
 import driver.FeedBackProcess;
 
 public class TestEveryAlogrithm {
@@ -30,6 +33,36 @@ public class TestEveryAlogrithm {
 		ChainProcess test = new ChainProcess(wrongCase, caseRunner, param,
 				suite);
 		test.testWorkFlow();
+		this.outputResult(
+				test.getWorkMachine().getPool().getExistedBugTuples(), test
+						.getWorkMachine().getExtraCases());
+	}
+
+	public void expChainAugFeedBack(TestCase wrongCase, List<Tuple> bugs,
+			int[] param, TestSuite suite) {
+		System.out.println("FeedBackAug");
+		CaseRunner caseRunner = getCaseRunner(bugs);
+		FeedBackAugProcess fb = new FeedBackAugProcess(wrongCase, caseRunner,
+				param, suite);
+		fb.testWorkFlow();
+		TestSuite addsuite = new TestSuiteImplement();
+		for (TestCase testCase : fb.getFb().getTestCases())
+			addsuite.addTest(testCase);
+
+		this.outputResult(fb.getFb().getBugs(), addsuite);
+	}
+
+	public void expAugChain(TestCase wrongCase, List<Tuple> bugs, int[] param,
+			TestSuite suite) {
+		System.out.println("ChainAug");
+		CaseRunner caseRunner = getCaseRunner(bugs);
+
+		ChainAugProcess test = new ChainAugProcess(wrongCase, caseRunner,
+				param, suite);
+		test.testWorkFlow();
+		this.outputResult(
+				test.getWorkMachine().getPool().getExistedBugTuples(), test
+						.getWorkMachine().getExtraCases());
 	}
 
 	public void expChainFeedBack(TestCase wrongCase, List<Tuple> bugs,
@@ -39,6 +72,10 @@ public class TestEveryAlogrithm {
 		FeedBackProcess fb = new FeedBackProcess(wrongCase, caseRunner, param,
 				suite);
 		fb.testWorkFlow();
+		TestSuite addsuite = new TestSuiteImplement();
+		for (TestCase testCase : fb.getFb().getTestCases())
+			addsuite.addTest(testCase);
+		this.outputResult(fb.getFb().getBugs(), addsuite);
 	}
 
 	public void expFIC(TestCase wrongCase, List<Tuple> bugs, int[] param) {
@@ -47,16 +84,7 @@ public class TestEveryAlogrithm {
 		FIC fic = new FIC(wrongCase, param, caseRunner);
 		fic.FicNOP();
 
-		for (Tuple bug : fic.getBugs()) {
-			System.out.println(bug.toString());
-		}
-		System.out.println("all:" + fic.getExtraCases().getTestCaseNum());
-		for (int i = 0; i < fic.getExtraCases().getTestCaseNum(); i++) {
-			System.out.print(fic.getExtraCases().getAt(i).getStringOfTest());
-			System.out
-					.println(fic.getExtraCases().getAt(i).testDescription() == TestCase.PASSED ? "pass"
-							: "fail");
-		}
+		outputResult(fic.getBugs(), fic.getExtraCases());
 	}
 
 	public void expRI(TestCase wrongCase, List<Tuple> bugs, int[] param) {
@@ -68,16 +96,7 @@ public class TestEveryAlogrithm {
 
 		RI ri = new RI(generate, caseRunner);
 		List<Tuple> tupleg = ri.process(wrongCase);
-		for (Tuple tuple : tupleg)
-			System.out.println(tuple.toString());
-		System.out
-				.println("all:" + ri.getAddtionalTestSuite().getTestCaseNum());
-		for (int i = 0; i < ri.getAddtionalTestSuite().getTestCaseNum(); i++) {
-			System.out.print(ri.getAddtionalTestSuite().getAt(i)
-					.getStringOfTest());
-			System.out.println(ri.getAddtionalTestSuite().getAt(i)
-					.testDescription() == TestCase.PASSED ? "pass" : "fail");
-		}
+		outputResult(tupleg, ri.getAddtionalTestSuite());
 	}
 
 	public void expOFOT(TestCase wrongCase, List<Tuple> bugs, int[] param) {
@@ -86,18 +105,10 @@ public class TestEveryAlogrithm {
 		OFOT ofot = new OFOT();
 		ofot.process(wrongCase, param, caseRunner);
 
-		System.out.println("bugs:");
-		for (Tuple tuple : ofot.getBugs()) {
-			System.out.println(tuple.toString());
-		}
-		System.out.println("cases:" + ofot.getExecuted().size());
-
-		for (TestCase cases : ofot.getExecuted().keySet()) {
-			System.out.print(cases.getStringOfTest());
-			System.out
-					.println(cases.testDescription() == TestCase.PASSED ? "pass"
-							: "fail");
-		}
+		TestSuite suite = new TestSuiteImplement();
+		for (TestCase testCase : ofot.getExecuted().keySet())
+			suite.addTest(testCase);
+		outputResult(ofot.getBugs(), suite);
 
 	}
 
@@ -108,16 +119,26 @@ public class TestEveryAlogrithm {
 		CaseRunner caseRunner = getCaseRunner(bugs);
 		IterAIFL ifl = new IterAIFL(generate, caseRunner);
 		ifl.process(wrongCase);
-		for (Tuple tuple : ifl.getBugs()) {
-			System.out.println(tuple.toString());
-		}
-		System.out.println("cases:" + ifl.getSuite().getTestCaseNum());
-		for (int i = 0; i < ifl.getSuite().getTestCaseNum(); i++) {
-			System.out.print(ifl.getSuite().getAt(i).getStringOfTest());
-			System.out
-					.println(ifl.getSuite().getAt(i).testDescription() == TestCase.PASSED ? "pass"
-							: "fail");
-		}
+		outputResult(ifl.getBugs(), ifl.getSuite());
+	}
+
+	public void expSpectrumBased(TestCase wrongCase, List<Tuple> bugs,
+			int[] param) {
+		System.out.println("SpectrumBased");
+
+		CaseRunner caseRunner = getCaseRunner(bugs);
+
+		SpectrumBased sp = new SpectrumBased(caseRunner);
+		TestSuite suite = new TestSuiteImplement();
+		suite.addTest(wrongCase);
+
+		sp.process(suite, param, 2);
+
+		this.outputResult(sp.getFailreIndcuing(), sp.getAddtionalSuite());
+	}
+
+	public void expLocateGraph() {
+
 	}
 
 	private CaseRunner getCaseRunner(List<Tuple> bugs) {
@@ -125,6 +146,19 @@ public class TestEveryAlogrithm {
 		for (Tuple bug : bugs)
 			((CaseRunnerWithBugInject) caseRunner).inject(bug);
 		return caseRunner;
+	}
+
+	public void outputResult(List<Tuple> bugs, TestSuite suite) {
+		for (Tuple tuple : bugs) {
+			System.out.println(tuple.toString());
+		}
+		System.out.println("cases:" + suite.getTestCaseNum());
+		for (int i = 0; i < suite.getTestCaseNum(); i++) {
+			System.out.print(suite.getAt(i).getStringOfTest());
+			System.out
+					.println(suite.getAt(i).testDescription() == TestCase.PASSED ? "pass"
+							: "fail");
+		}
 	}
 
 	public void test() {
@@ -136,6 +170,8 @@ public class TestEveryAlogrithm {
 		((TestCaseImplement) rightCase).setTestCase(pass);
 		TestCase wrongCase = new TestCaseImplement();
 		((TestCaseImplement) wrongCase).setTestCase(wrong);
+		wrongCase.setTestState(TestCase.FAILED);
+		rightCase.setTestState(TestCase.PASSED);
 
 		TestSuite rightSuite = new TestSuiteImplement();
 		rightSuite.addTest(rightCase);
@@ -155,10 +191,13 @@ public class TestEveryAlogrithm {
 
 		this.expChain(wrongCase, bugs, param, rightSuite);
 		this.expChainFeedBack(wrongCase, bugs, param, rightSuite);
+		this.expAugChain(wrongCase, bugs, param, rightSuite);
+		this.expChainAugFeedBack(wrongCase, bugs, param, rightSuite);
 		this.expFIC(wrongCase, bugs, param);
 		this.expRI(wrongCase, bugs, param);
 		this.expOFOT(wrongCase, bugs, param);
-		//this.expIterAIFL(wrongCase, bugs, param);
+		// this.expIterAIFL(wrongCase, bugs, param);
+		this.expSpectrumBased(wrongCase, bugs, param);
 	}
 
 	public static void main(String[] args) {

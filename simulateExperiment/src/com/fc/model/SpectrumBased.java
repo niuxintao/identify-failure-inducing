@@ -334,6 +334,14 @@ public class SpectrumBased {
 		return false;
 	}
 
+	public TestSuite getAddtionalSuite() {
+		return addtionalSuite;
+	}
+
+	public List<Tuple> getFailure_inducing() {
+		return failure_inducing;
+	}
+
 	public List<Tuple> getTwayTuplesInTestCase(TestCase testCase, int degree) {
 		Tuple root = new Tuple(testCase.getLength(), testCase);
 		for (int i = 0; i < root.getDegree(); i++) {

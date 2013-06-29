@@ -17,6 +17,7 @@ public class ChainAugProcess {
 	protected CaseRunner caseRunner;
 	protected CorpTupleWithTestCase generate;
 	protected TuplePool pool;
+	protected ChainAug workMachine ;
 	
 	public ChainAugProcess(TestCase wrongCase, CaseRunner caseRunner, int[] param , TestSuite rightSuite){
 		this.caseRunner = caseRunner;
@@ -26,10 +27,15 @@ public class ChainAugProcess {
 
 
 	public void testWorkFlow() {
-		ChainAug workMachine = new ChainAug(pool, generate);
+		workMachine = new ChainAug(pool, generate);
 		character(workMachine);
-		outputResult(workMachine);
+	//	outputResult(workMachine);
 	}
+
+	public ChainAug getWorkMachine() {
+		return workMachine;
+	}
+
 
 	private void character(ChainAug workMachine) {
 		while (true) {
@@ -40,7 +46,7 @@ public class ChainAugProcess {
 		}
 	}
 
-	private void outputResult(ChainAug workMachine) {
+	public void outputResult(ChainAug workMachine) {
 		System.out.println("begin");
 		List<Tuple> bugs = workMachine.getPool().getExistedBugTuples();
 		for (Tuple bug : bugs) {
