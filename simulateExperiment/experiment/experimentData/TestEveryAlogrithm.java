@@ -7,6 +7,7 @@ import com.fc.caseRunner.CaseRunner;
 import com.fc.caseRunner.CaseRunnerWithBugInject;
 import com.fc.model.FIC;
 import com.fc.model.IterAIFL;
+import com.fc.model.LocateGraph;
 import com.fc.model.OFOT;
 import com.fc.model.RI;
 import com.fc.model.SpectrumBased;
@@ -137,7 +138,21 @@ public class TestEveryAlogrithm {
 		this.outputResult(sp.getFailreIndcuing(), sp.getAddtionalSuite());
 	}
 
-	public void expLocateGraph() {
+	public void expLocateGraph(TestCase wrongCase, List<Tuple> bugs,
+			int[] param, TestCase rightCase) {
+		System.out.println("LocateGraph");
+
+		CaseRunner caseRunner = getCaseRunner(bugs);
+		LocateGraph lg = new LocateGraph(caseRunner);
+		Tuple tuple = new Tuple(0, wrongCase);
+		tuple = tuple.getReverseTuple();
+
+		List<Tuple> faidu = lg.locateErrorsInTest(rightCase, wrongCase, tuple);
+
+		this.outputResult(faidu, lg.getAddtionalTestSuite());
+	}
+
+	public void expCTA() {
 
 	}
 
@@ -198,6 +213,8 @@ public class TestEveryAlogrithm {
 		this.expOFOT(wrongCase, bugs, param);
 		// this.expIterAIFL(wrongCase, bugs, param);
 		this.expSpectrumBased(wrongCase, bugs, param);
+		this.expLocateGraph(wrongCase, bugs, param, rightCase);
+
 	}
 
 	public static void main(String[] args) {
