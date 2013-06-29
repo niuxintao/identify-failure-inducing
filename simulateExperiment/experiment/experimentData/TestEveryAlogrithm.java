@@ -158,7 +158,7 @@ public class TestEveryAlogrithm {
 		this.expFIC(wrongCase, bugs, param);
 		this.expRI(wrongCase, bugs, param);
 		this.expOFOT(wrongCase, bugs, param);
-		this.expIterAIFL(wrongCase, bugs, param);
+		//this.expIterAIFL(wrongCase, bugs, param);
 	}
 
 	public static void main(String[] args) {
