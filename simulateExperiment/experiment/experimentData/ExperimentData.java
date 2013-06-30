@@ -8,6 +8,7 @@ import com.fc.caseRunner.CaseRunner;
 import com.fc.caseRunner.CaseRunnerWithBugInject;
 import com.fc.testObject.TestCase;
 import com.fc.testObject.TestCaseImplement;
+import com.fc.testObject.TestSuite;
 import com.fc.tuple.CorpTupleWithTestCase;
 import com.fc.tuple.Tuple;
 
@@ -15,6 +16,7 @@ public class ExperimentData {
 	private CaseRunner caseRunner;
 	private CorpTupleWithTestCase generate;
 	private TestCase wrongCase;
+	private TestSuite rightSuite;
 
 	private List<Tuple> bugs2Mode;
 	private List<Tuple> bugs3Mode;
@@ -58,11 +60,24 @@ public class ExperimentData {
 	public void reset(DataBaseOfTestCase data) {
 		clear();
 		this.wrongCase = data.getWrongCase();
+		this.rightSuite = data.getRightSuite();
 		caseRunner = new CaseRunnerWithBugInject();
 		generate = new CorpTupleWithTestCase(data.getWrongCase(),
 				data.getParam());
 
 		param = data.getParam();
+	}
+
+	public TestCase getWrongCase() {
+		return wrongCase;
+	}
+
+	public TestSuite getRightSuite() {
+		return rightSuite;
+	}
+
+	public int[] getParam() {
+		return param;
 	}
 
 	public void clear() {
@@ -141,7 +156,8 @@ public class ExperimentData {
 		System.out.println("anotherWrongCase:"
 				+ anotherWrongCase.getStringOfTest());
 
-		List<Tuple> importTuples = getRoot(anotherWrongCase).getChildTuplesByDegree(2);
+		List<Tuple> importTuples = getRoot(anotherWrongCase)
+				.getChildTuplesByDegree(2);
 
 		List<Tuple[]> result = new ArrayList<Tuple[]>();
 		for (Tuple tuple : tuples) {

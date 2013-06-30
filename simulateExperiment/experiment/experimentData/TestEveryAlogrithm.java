@@ -123,7 +123,23 @@ public class TestEveryAlogrithm {
 		ifl.process(wrongCase);
 		outputResult(ifl.getBugs(), ifl.getSuite());
 	}
+	
+	public void expLocateGraph(TestCase wrongCase, List<Tuple> bugs,
+			int[] param, TestCase rightCase) {
+		System.out.println("LocateGraph");
 
+		CaseRunner caseRunner = getCaseRunner(bugs);
+		LocateGraph lg = new LocateGraph(caseRunner);
+		Tuple tuple = new Tuple(0, wrongCase);
+		tuple = tuple.getReverseTuple();
+
+		List<Tuple> faidu = lg.locateErrorsInTest(rightCase, wrongCase, tuple);
+
+		this.outputResult(faidu, lg.getAddtionalTestSuite());
+	}
+	
+
+	// a covering array may make it better
 	public void expSpectrumBased(TestCase wrongCase, List<Tuple> bugs,
 			int[] param) {
 		System.out.println("SpectrumBased");
@@ -139,31 +155,19 @@ public class TestEveryAlogrithm {
 		this.outputResult(sp.getFailreIndcuing(), sp.getAddtionalSuite());
 	}
 
-	public void expLocateGraph(TestCase wrongCase, List<Tuple> bugs,
-			int[] param, TestCase rightCase) {
-		System.out.println("LocateGraph");
+	// hasn't think
+	public void expLocateGraphBinary() {
 
-		CaseRunner caseRunner = getCaseRunner(bugs);
-		LocateGraph lg = new LocateGraph(caseRunner);
-		Tuple tuple = new Tuple(0, wrongCase);
-		tuple = tuple.getReverseTuple();
-
-		List<Tuple> faidu = lg.locateErrorsInTest(rightCase, wrongCase, tuple);
-
-		this.outputResult(faidu, lg.getAddtionalTestSuite());
-	}
-	
-	public void expLocateGraphBinary(){
-		
 	}
 
+	// need a covering array
 	public void expCTA(TestSuite suite, List<Tuple> bugs, int[] param)
 			throws Exception {
 		System.out.println("Classified tree analysis");
 		CaseRunner caseRunner = getCaseRunner(bugs);
 		for (int i = 0; i < suite.getTestCaseNum(); i++)
 			suite.getAt(i).setTestState(caseRunner.runTestCase(suite.getAt(i)));
-		
+
 		CTA cta = new CTA();
 		String[] classes = { "pass", "fail" };
 		String[] state = new String[suite.getTestCaseNum()];
@@ -172,7 +176,6 @@ public class TestEveryAlogrithm {
 					: "fail");
 		cta.process(param, classes, suite, state);
 	}
-	
 
 	private CaseRunner getCaseRunner(List<Tuple> bugs) {
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
@@ -186,19 +189,46 @@ public class TestEveryAlogrithm {
 			System.out.println(tuple.toString());
 		}
 		System.out.println("cases:" + suite.getTestCaseNum());
-		for (int i = 0; i < suite.getTestCaseNum(); i++) {
-			System.out.print(suite.getAt(i).getStringOfTest());
-			System.out
-					.println(suite.getAt(i).testDescription() == TestCase.PASSED ? "pass"
-							: "fail");
+		 for (int i = 0; i < suite.getTestCaseNum(); i++) {
+		 System.out.print(suite.getAt(i).getStringOfTest());
+		 System.out
+		 .println(suite.getAt(i).testDescription() == TestCase.PASSED ? "pass"
+		 : "fail");
+		 }
+	}
+
+	public double[] getRecallAndPrecise(List<Tuple> identified,
+			List<Tuple> realBugs) {
+		double recall = 0;
+		double precise = 0;
+		for (Tuple iden : identified) {
+			if (realBugs.contains(iden)) {
+				recall++;
+				precise++;
+			}
 		}
+		recall = recall / (double) realBugs.size();
+		precise = precise / (double) identified.size();
+		
+		double[] result = new double[2];
+		result[0] = recall;
+		result[1] = precise;
+		return result;
+	}
+	
+	public double[] getResult(List<Tuple> bugs, TestSuite suite,List<Tuple> realBugs){
+		double[] result = new double[3];
+		result[0] = suite.getTestCaseNum();
+		double[] info = this.getRecallAndPrecise(bugs, realBugs);
+ 		result[1] = info[0];
+		result[2] = info[1];
+		
+		return result;
 	}
 
 	public void test() {
-		int[] wrong = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-				1, 1, 1, 1, 1, 1, 1, 1 };
-		int[] pass = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0 };
+		int[] wrong = new int[] { 1, 1, 1, 1, 1, 1, 1, 1 };
+		int[] pass = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 		TestCase rightCase = new TestCaseImplement();
 		((TestCaseImplement) rightCase).setTestCase(pass);
 		TestCase wrongCase = new TestCaseImplement();
@@ -209,8 +239,7 @@ public class TestEveryAlogrithm {
 		TestSuite rightSuite = new TestSuiteImplement();
 		rightSuite.addTest(rightCase);
 
-		int[] param = new int[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-				3, 3, 3, 3, 3, 3, 3, 3 };
+		int[] param = new int[] { 3, 3, 3, 3, 3, 3, 3, 3 };
 
 		Tuple bugModel = new Tuple(1, wrongCase);
 		bugModel.set(0, 2);
@@ -229,10 +258,9 @@ public class TestEveryAlogrithm {
 		this.expFIC(wrongCase, bugs, param);
 		this.expRI(wrongCase, bugs, param);
 		this.expOFOT(wrongCase, bugs, param);
-		// this.expIterAIFL(wrongCase, bugs, param);
+		this.expIterAIFL(wrongCase, bugs, param);
 		this.expSpectrumBased(wrongCase, bugs, param);
 		this.expLocateGraph(wrongCase, bugs, param, rightCase);
-
 	}
 
 	public static void main(String[] args) {
