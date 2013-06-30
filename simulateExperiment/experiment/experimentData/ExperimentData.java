@@ -37,6 +37,11 @@ public class ExperimentData {
 		return tuple.getReverseTuple();
 	}
 
+	public List<Tuple> generateBugByDegree(int degree) {
+		return this.getRoot(this.wrongCase).getChildTuplesByDegree(degree);
+
+	}
+
 	public List<Tuple> generate2DegreeBug() {
 		if (bugs2Mode == null)
 			bugs2Mode = this.getRoot(this.wrongCase).getChildTuplesByDegree(2);
