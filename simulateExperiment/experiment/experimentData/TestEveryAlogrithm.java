@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fc.caseRunner.CaseRunner;
 import com.fc.caseRunner.CaseRunnerWithBugInject;
+import com.fc.model.CTA;
 import com.fc.model.FIC;
 import com.fc.model.IterAIFL;
 import com.fc.model.LocateGraph;
@@ -151,10 +152,27 @@ public class TestEveryAlogrithm {
 
 		this.outputResult(faidu, lg.getAddtionalTestSuite());
 	}
-
-	public void expCTA() {
-
+	
+	public void expLocateGraphBinary(){
+		
 	}
+
+	public void expCTA(TestSuite suite, List<Tuple> bugs, int[] param)
+			throws Exception {
+		System.out.println("Classified tree analysis");
+		CaseRunner caseRunner = getCaseRunner(bugs);
+		for (int i = 0; i < suite.getTestCaseNum(); i++)
+			suite.getAt(i).setTestState(caseRunner.runTestCase(suite.getAt(i)));
+		
+		CTA cta = new CTA();
+		String[] classes = { "pass", "fail" };
+		String[] state = new String[suite.getTestCaseNum()];
+		for (int i = 0; i < suite.getTestCaseNum(); i++)
+			state[i] = (suite.getAt(i).testDescription() == TestCase.PASSED ? "pass"
+					: "fail");
+		cta.process(param, classes, suite, state);
+	}
+	
 
 	private CaseRunner getCaseRunner(List<Tuple> bugs) {
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
