@@ -24,6 +24,7 @@ public class DataBaseOfTestCase {
 		}
 		wrongCase = new TestCaseImplement();
 		((TestCaseImplement) wrongCase).setTestCase(wrong);
+		wrongCase.setTestState(TestCase.FAILED);
 
 		int[] right = new int[length];
 		for (int i = 0; i < length; i++) {
@@ -31,6 +32,7 @@ public class DataBaseOfTestCase {
 		}
 		rightCase = new TestCaseImplement();
 		((TestCaseImplement) rightCase).setTestCase(right);
+		rightCase.setTestState(TestCase.PASSED);
 
 		rightSuite = new TestSuiteImplement();
 		rightSuite.addTest(rightCase);

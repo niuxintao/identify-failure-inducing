@@ -32,14 +32,16 @@ public class SpectrumBased {
 
 	public void process(TestSuite suite, int[] parameters, int degree) {
 		TestSuite iteratSuite = suite;
+//		for(int i = 0 ; i < iteratSuite.getTestCaseNum() ; i ++)
+//			System.out.println(iteratSuite.getAt(i).getStringOfTest());
 		List<Tuple> pi = new ArrayList<Tuple>();
 		List<Tuple> tway = getTwayTuplesInTestSuite(iteratSuite, degree);
 		tway = this.removeInPassed(tway, suite);
 		tway = this.rank(tway, suite);
-
-		// for (Tuple tuple : tway) {
-		// System.out.println(tuple.toString());
-		// }
+		
+//		for (Tuple tuple : tway) {
+//			System.out.println(tuple.toString());
+//		}
 
 		while (true) {
 			if (tway.size() != 0 && (tway.size() < pi.size() || pi.size() == 0)) {
@@ -233,7 +235,7 @@ public class SpectrumBased {
 			if (n >= TOPNUMBER)
 				break;
 			Tuple tuple = iter.next();
-//			System.out.println(tuple.toString());
+			// System.out.println(tuple.toString());
 			TestCase testCase = generateCase(tuple, parameter, suite, pi);
 
 			if (testCase == null) {
@@ -241,7 +243,7 @@ public class SpectrumBased {
 				return null;
 			} else {
 				result.addTest(testCase);
-//				System.out.println(testCase.getStringOfTest());
+				// System.out.println(testCase.getStringOfTest());
 				this.addtionalSuite.addTest(testCase);
 			}
 			n++;
@@ -393,20 +395,21 @@ public class SpectrumBased {
 	}
 
 	public static void main(String[] args) {
-		int[][] cases = new int[][] { { 0, 0, 0, 0, 0, 0, 0 },
-				{ 1, 1, 1, 1, 1, 1, 1 } };
+		int[][] cases = new int[][] { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
 		TestSuite suite = new TestSuiteImplement();
-		int[] parameters = new int[] { 3, 3, 4, 5, 3, 3, 3 };
+		int[] parameters = new int[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 
 		for (int i = 0; i < cases.length; i++) {
 			int[] testCase = cases[i];
 			TestCase Case = new TestCaseImplement();
 			((TestCaseImplement) Case).setTestCase(testCase);
-			if (i == 0)
+			if (i == 0) {
 				Case.setTestState(TestCase.FAILED);
-			else
+				suite.addTest(Case);
+			} else
 				Case.setTestState(TestCase.PASSED);
-			suite.addTest(Case);
+			// suite.addTest(Case);
 		}
 
 		Tuple bugModel1 = new Tuple(2, suite.getAt(0));
@@ -418,7 +421,7 @@ public class SpectrumBased {
 
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel1);
-		((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
+		// ((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
 
 		SpectrumBased sp = new SpectrumBased(caseRunner);
 

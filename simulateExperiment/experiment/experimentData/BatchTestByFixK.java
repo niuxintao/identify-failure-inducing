@@ -10,6 +10,19 @@ import java.util.List;
 import com.fc.tuple.Tuple;
 
 public class BatchTestByFixK {
+	public static final int CHAIN = 0;
+	public static final int AUGCHAIN = 1;
+	public static final int FEEDBACK = 2;
+	public static final int AUGFEEDBACK = 3;
+	public static final int FIC = 4;
+	public static final int RI = 5;
+	public static final int OFOT = 6;
+	public static final int AIFL = 7;
+	public static final int LG = 8;
+	public static final int SP = 9;
+
+	public static final int NUM = 10;
+
 	public BatchTestByFixK() {
 
 	}
@@ -19,43 +32,73 @@ public class BatchTestByFixK {
 		ExperimentData experimentData = new ExperimentData(casedata);
 		List<Tuple> bugs = experimentData.generateBugByDegree(degree);
 		TestEveryAlogrithm ta = new TestEveryAlogrithm();
-		List<double[]> chain = new ArrayList<double[]>();
-		List<double[]> augchain = new ArrayList<double[]>();
-		List<double[]> feedBack = new ArrayList<double[]>();
-		List<double[]> augFeedBack = new ArrayList<double[]>();
-		List<double[]> fic = new ArrayList<double[]>();
-		List<double[]> ri = new ArrayList<double[]>();
-		List<double[]> ofot = new ArrayList<double[]>();
-		List<double[]> aifl = new ArrayList<double[]>();
-		List<double[]> lg = new ArrayList<double[]>();
-		List<double[]> sp = new ArrayList<double[]>();
 
+		// data record
+		List<List<double[]>> data = new ArrayList<List<double[]>>();
+		for (int i = 0; i < NUM; i++)
+			data.add(new ArrayList<double[]>());
+
+		// for each bug, inject and test and record
 		for (Tuple tuple : bugs) {
 			List<Tuple> cn = new ArrayList<Tuple>();
 			cn.add(tuple);
-			chain.add(ta.expChain(experimentData.getWrongCase(), cn,
-					experimentData.getParam(), experimentData.getRightSuite()));
-			augchain.add(ta.expAugChain(experimentData.getWrongCase(), cn,
-					experimentData.getParam(), experimentData.getRightSuite()));
-			feedBack.add(ta.expChainFeedBack(experimentData.getWrongCase(), cn,
-					experimentData.getParam(), experimentData.getRightSuite()));
-			augFeedBack.add(ta.expChainFeedBack(experimentData.getWrongCase(),
-					cn, experimentData.getParam(),
-					experimentData.getRightSuite()));
-			fic.add(ta.expFIC(experimentData.getWrongCase(), cn,
-					experimentData.getParam()));
-			ri.add(ta.expRI(experimentData.getWrongCase(), cn,
-					experimentData.getParam()));
-			ofot.add(ta.expOFOT(experimentData.getWrongCase(), cn,
-					experimentData.getParam()));
-			aifl.add(ta.expIterAIFL(experimentData.getWrongCase(), cn,
-					experimentData.getParam()));
-			lg.add(ta.expLocateGraph(experimentData.getWrongCase(), cn,
-					experimentData.getParam(), experimentData.getRightSuite()
-							.getAt(0)));
-			sp.add(ta.expSpectrumBased(experimentData.getWrongCase(), cn,
-					experimentData.getParam()));
+			data.get(CHAIN).add(
+					ta.expChain(experimentData.getWrongCase(), cn,
+							experimentData.getParam(),
+							experimentData.getRightSuite()));
+			data.get(AUGCHAIN).add(
+					ta.expAugChain(experimentData.getWrongCase(), cn,
+							experimentData.getParam(),
+							experimentData.getRightSuite()));
+			data.get(FEEDBACK).add(
+					ta.expChainFeedBack(experimentData.getWrongCase(), cn,
+							experimentData.getParam(),
+							experimentData.getRightSuite()));
+			data.get(AUGFEEDBACK).add(
+					ta.expChainAugFeedBack(experimentData.getWrongCase(), cn,
+							experimentData.getParam(),
+							experimentData.getRightSuite()));
+			data.get(FIC).add(
+					ta.expFIC(experimentData.getWrongCase(), cn,
+							experimentData.getParam()));
+			data.get(RI).add(
+					ta.expRI(experimentData.getWrongCase(), cn,
+							experimentData.getParam()));
+			data.get(OFOT).add(
+					ta.expOFOT(experimentData.getWrongCase(), cn,
+							experimentData.getParam()));
+			data.get(AIFL).add(
+					ta.expIterAIFL(experimentData.getWrongCase(), cn,
+							experimentData.getParam()));
+			data.get(LG).add(
+					ta.expLocateGraph(experimentData.getWrongCase(), cn,
+							experimentData.getParam(), experimentData
+									.getRightSuite().getAt(0)));
+			data.get(SP).add(
+					ta.expSpectrumBased(experimentData.getWrongCase(), cn,
+							experimentData.getParam()));
 		}
+
+		// output result
+		this.setOutPut("fixK-addtion.txt");
+		for (List<double[]> da : data) {
+			outputResult(da, 0);
+		}
+		this.setOutPut("fixK-recall.txt");
+		for (List<double[]> da : data) {
+			outputResult(da, 1);
+		}
+		this.setOutPut("fixK-precise.txt");
+		for (List<double[]> da : data) {
+			outputResult(da, 2);
+		}
+
+	}
+
+	public void outputResult(List<double[]> data, int id) {
+		for (double[] da : data)
+			System.out.print(da[id] + " ");
+		System.out.println();
 	}
 
 	public void add(double[] a, double[] b) {
@@ -78,7 +121,7 @@ public class BatchTestByFixK {
 		ExperimentData experimentData = new ExperimentData(casedata);
 		List<Tuple[]> bugs = experimentData.getTwoBugs(experimentData
 				.generateBugByDegree(degree));
-	//	TestEveryAlogrithm ta = new TestEveryAlogrithm();
+		// TestEveryAlogrithm ta = new TestEveryAlogrithm();
 
 		for (Tuple[] tuple : bugs) {
 			List<Tuple> cn = new ArrayList<Tuple>();
@@ -98,6 +141,11 @@ public class BatchTestByFixK {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static void main(String[] args) {
+		BatchTestByFixK fk = new BatchTestByFixK();
+		fk.testSingle(12, 3, 2);
 	}
 
 }
