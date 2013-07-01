@@ -9,8 +9,8 @@ import java.util.List;
 
 import com.fc.tuple.Tuple;
 
-public class BatchTest {
-	public BatchTest() {
+public class BatchTestByFixK {
+	public BatchTestByFixK() {
 
 	}
 
@@ -19,44 +19,41 @@ public class BatchTest {
 		ExperimentData experimentData = new ExperimentData(casedata);
 		List<Tuple> bugs = experimentData.generateBugByDegree(degree);
 		TestEveryAlogrithm ta = new TestEveryAlogrithm();
-		double[] chain = new double[3];
-		double[] augchain = new double[3];
-		double[] feedBack = new double[3];
-		double[] augFeedBack = new double[3];
-		double[] fic = new double[3];
-		double[] ri = new double[3];
-		double[] ofot = new double[3];
-		double[] aifl = new double[3];
-		double[] lg = new double[3];
-		double[] sp = new double[3];
+		List<double[]> chain = new ArrayList<double[]>();
+		List<double[]> augchain = new ArrayList<double[]>();
+		List<double[]> feedBack = new ArrayList<double[]>();
+		List<double[]> augFeedBack = new ArrayList<double[]>();
+		List<double[]> fic = new ArrayList<double[]>();
+		List<double[]> ri = new ArrayList<double[]>();
+		List<double[]> ofot = new ArrayList<double[]>();
+		List<double[]> aifl = new ArrayList<double[]>();
+		List<double[]> lg = new ArrayList<double[]>();
+		List<double[]> sp = new ArrayList<double[]>();
 
 		for (Tuple tuple : bugs) {
 			List<Tuple> cn = new ArrayList<Tuple>();
 			cn.add(tuple);
-			add(chain, ta.expChain(experimentData.getWrongCase(), cn,
+			chain.add(ta.expChain(experimentData.getWrongCase(), cn,
 					experimentData.getParam(), experimentData.getRightSuite()));
-			add(augchain, ta.expAugChain(experimentData.getWrongCase(), cn,
+			augchain.add(ta.expAugChain(experimentData.getWrongCase(), cn,
 					experimentData.getParam(), experimentData.getRightSuite()));
-			add(feedBack, ta.expChainFeedBack(experimentData.getWrongCase(),
+			feedBack.add(ta.expChainFeedBack(experimentData.getWrongCase(), cn,
+					experimentData.getParam(), experimentData.getRightSuite()));
+			augFeedBack.add(ta.expChainFeedBack(experimentData.getWrongCase(),
 					cn, experimentData.getParam(),
 					experimentData.getRightSuite()));
-			add(augFeedBack, ta.expChainFeedBack(experimentData.getWrongCase(),
-					cn, experimentData.getParam(),
-					experimentData.getRightSuite()));
-			add(fic,
-					ta.expFIC(experimentData.getWrongCase(), cn,
-							experimentData.getParam()));
-			add(ri,
-					ta.expRI(experimentData.getWrongCase(), cn,
-							experimentData.getParam()));
-			add(ofot, ta.expOFOT(experimentData.getWrongCase(), cn,
+			fic.add(ta.expFIC(experimentData.getWrongCase(), cn,
 					experimentData.getParam()));
-			add(aifl, ta.expIterAIFL(experimentData.getWrongCase(), cn,
+			ri.add(ta.expRI(experimentData.getWrongCase(), cn,
 					experimentData.getParam()));
-			add(lg, ta.expLocateGraph(experimentData.getWrongCase(), cn,
+			ofot.add(ta.expOFOT(experimentData.getWrongCase(), cn,
+					experimentData.getParam()));
+			aifl.add(ta.expIterAIFL(experimentData.getWrongCase(), cn,
+					experimentData.getParam()));
+			lg.add(ta.expLocateGraph(experimentData.getWrongCase(), cn,
 					experimentData.getParam(), experimentData.getRightSuite()
 							.getAt(0)));
-			add(sp, ta.expSpectrumBased(experimentData.getWrongCase(), cn,
+			sp.add(ta.expSpectrumBased(experimentData.getWrongCase(), cn,
 					experimentData.getParam()));
 		}
 	}
@@ -66,14 +63,14 @@ public class BatchTest {
 		a[1] += b[1];
 		a[2] += b[2];
 	}
-	
-	public void getAvg(double[] a, int num){
+
+	public void getAvg(double[] a, int num) {
 		a[0] /= num;
 		a[1] /= num;
 		a[2] /= num;
 		System.out.println(a[0]);
-		System.out.println(a[0]);
-		System.out.println(a[0]);
+		System.out.println(a[1]);
+		System.out.println(a[2]);
 	}
 
 	public void testDouble(int caseLenth, int value, int degree) {
@@ -81,14 +78,14 @@ public class BatchTest {
 		ExperimentData experimentData = new ExperimentData(casedata);
 		List<Tuple[]> bugs = experimentData.getTwoBugs(experimentData
 				.generateBugByDegree(degree));
-		TestEveryAlogrithm ta = new TestEveryAlogrithm();
+	//	TestEveryAlogrithm ta = new TestEveryAlogrithm();
 
 		for (Tuple[] tuple : bugs) {
 			List<Tuple> cn = new ArrayList<Tuple>();
 			cn.add(tuple[0]);
 			cn.add(tuple[1]);
-			double[] chain = ta.expChain(experimentData.getWrongCase(), cn,
-					experimentData.getParam(), experimentData.getRightSuite());
+			// double[] chain = ta.expChain(experimentData.getWrongCase(), cn,
+			// experimentData.getParam(), experimentData.getRightSuite());
 		}
 	}
 
