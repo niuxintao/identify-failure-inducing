@@ -121,11 +121,11 @@ public class BatchTestByFixK {
 		for (List<double[]> da : data) {
 			outputResult(da, 0);
 		}
-		this.setOutPut(fileId+"fixK-recall.txt");
+		this.setOutPut(fileId+"-fixK-recall.txt");
 		for (List<double[]> da : data) {
 			outputResult(da, 1);
 		}
-		this.setOutPut(fileId+"fixK-precise.txt");
+		this.setOutPut(fileId+"-fixK-precise.txt");
 		for (List<double[]> da : data) {
 			outputResult(da, 2);
 		}

@@ -57,11 +57,11 @@ public class BatchAvgTestByFreeK {
 		for (List<double[]> da : data) {
 			outputResult(da, 0);
 		}
-		this.setOutPut(fileId + "freeK-recall.txt");
+		this.setOutPut(fileId + "-freeK-recall.txt");
 		for (List<double[]> da : data) {
 			outputResult(da, 1);
 		}
-		this.setOutPut(fileId + "freeK-precise.txt");
+		this.setOutPut(fileId + "-freeK-precise.txt");
 		for (List<double[]> da : data) {
 			outputResult(da, 2);
 		}
