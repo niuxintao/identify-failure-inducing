@@ -107,10 +107,15 @@ public class ChainProcess {
 	}
 
 	public static void main(String[] args) {
-		int[] wrong = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-				1, 1, 1, 1, 1, 1, 1, 1 };
-		int[] pass = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0 };
+		int[] wrong = new int[100];
+		int[] pass = new int[100];
+		int[] param = new int [100];
+		for(int i = 0; i < 100 ; i++){
+			wrong[i] = 1;
+			pass[i] = 0;
+			param[i] = 3;
+		}
+
 		TestCase rightCase = new TestCaseImplement();
 		((TestCaseImplement) rightCase).setTestCase(pass);
 		TestCase wrongCase = new TestCaseImplement();
@@ -118,9 +123,6 @@ public class ChainProcess {
 
 		TestSuite rightSuite = new TestSuiteImplement();
 		rightSuite.addTest(rightCase);
-
-		int[] param = new int[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-				3, 3, 3, 3, 3, 3, 3, 3 };
 
 		Tuple bugModel = new Tuple(1, wrongCase);
 		bugModel.set(0, 2);
@@ -134,5 +136,6 @@ public class ChainProcess {
 		ChainProcess test = new ChainProcess(wrongCase, caseRunner, param,
 				rightSuite);
 		test.testWorkFlow();
+		test.outputResult(test.getWorkMachine());
 	}
 }

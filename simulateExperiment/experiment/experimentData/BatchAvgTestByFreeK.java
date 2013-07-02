@@ -17,9 +17,9 @@ public class BatchAvgTestByFreeK {
 	public static final int FIC = 4;
 	public static final int RI = 5;
 	public static final int OFOT = 6;
-	public static final int AIFL = 7;
-	public static final int LG = 8;
-	public static final int SP = 9;
+	public static final int LG = 7;
+	public static final int SP = 8;
+	public static final int AIFL = 9;
 
 	public static final int NUM = 10;
 
@@ -139,14 +139,14 @@ public class BatchAvgTestByFreeK {
 					experimentData.getParam()));
 			add(data.get(OFOT), ta.expOFOT(experimentData.getWrongCase(),
 					bgPair, experimentData.getParam()));
-			add(data.get(AIFL), ta.expIterAIFL(experimentData.getWrongCase(),
-					bgPair, experimentData.getParam()));
 			add(data.get(LG), ta.expLocateGraph(experimentData.getWrongCase(),
 					bgPair, experimentData.getParam(), experimentData
 							.getRightSuite().getAt(0)));
 			add(data.get(SP), ta.expSpectrumBased(
 					experimentData.getWrongCase(), bgPair,
 					experimentData.getParam()));
+			add(data.get(AIFL), ta.expIterAIFL(experimentData.getWrongCase(),
+					bgPair, experimentData.getParam()));
 		}
 
 		for (double[] da : data) {

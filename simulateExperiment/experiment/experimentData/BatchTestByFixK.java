@@ -17,11 +17,12 @@ public class BatchTestByFixK {
 	public static final int FIC = 4;
 	public static final int RI = 5;
 	public static final int OFOT = 6;
-	public static final int AIFL = 7;
-	public static final int LG = 8;
-	public static final int SP = 9;
+	public static final int LG = 7;
+	public static final int SP = 8;
+	public static final int AIFL = 9;
 
-	public static final int NUM = 10;
+
+	public static final int NUM = 8;
 
 	public BatchTestByFixK() {
 
@@ -79,22 +80,22 @@ public class BatchTestByFixK {
 			List<List<Tuple>> buPairs,String fileId) {
 		// for each bug pairs, inject and test and record
 		for (List<Tuple> bgPair : buPairs) {
-			data.get(CHAIN).add(
-					ta.expChain(experimentData.getWrongCase(), bgPair,
-							experimentData.getParam(),
-							experimentData.getRightSuite()));
-			data.get(AUGCHAIN).add(
-					ta.expAugChain(experimentData.getWrongCase(), bgPair,
-							experimentData.getParam(),
-							experimentData.getRightSuite()));
-			data.get(FEEDBACK).add(
-					ta.expChainFeedBack(experimentData.getWrongCase(), bgPair,
-							experimentData.getParam(),
-							experimentData.getRightSuite()));
-			data.get(AUGFEEDBACK).add(
-					ta.expChainAugFeedBack(experimentData.getWrongCase(), bgPair,
-							experimentData.getParam(),
-							experimentData.getRightSuite()));
+//			data.get(CHAIN).add(
+//					ta.expChain(experimentData.getWrongCase(), bgPair,
+//							experimentData.getParam(),
+//							experimentData.getRightSuite()));
+//			data.get(AUGCHAIN).add(
+//					ta.expAugChain(experimentData.getWrongCase(), bgPair,
+//							experimentData.getParam(),
+//							experimentData.getRightSuite()));
+//			data.get(FEEDBACK).add(
+//					ta.expChainFeedBack(experimentData.getWrongCase(), bgPair,
+//							experimentData.getParam(),
+//							experimentData.getRightSuite()));
+//			data.get(AUGFEEDBACK).add(
+//					ta.expChainAugFeedBack(experimentData.getWrongCase(), bgPair,
+//							experimentData.getParam(),
+//							experimentData.getRightSuite()));
 			data.get(FIC).add(
 					ta.expFIC(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam()));
@@ -104,16 +105,16 @@ public class BatchTestByFixK {
 			data.get(OFOT).add(
 					ta.expOFOT(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam()));
-			data.get(AIFL).add(
-					ta.expIterAIFL(experimentData.getWrongCase(), bgPair,
-							experimentData.getParam()));
 			data.get(LG).add(
 					ta.expLocateGraph(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam(), experimentData
 									.getRightSuite().getAt(0)));
-			data.get(SP).add(
-					ta.expSpectrumBased(experimentData.getWrongCase(), bgPair,
-							experimentData.getParam()));
+//			data.get(SP).add(
+//					ta.expSpectrumBased(experimentData.getWrongCase(), bgPair,
+//							experimentData.getParam()));
+//			data.get(AIFL).add(
+//					ta.expIterAIFL(experimentData.getWrongCase(), bgPair,
+//							experimentData.getParam()));
 		}
 
 		// output result
@@ -165,7 +166,7 @@ public class BatchTestByFixK {
 
 	public static void main(String[] args) {
 		BatchTestByFixK fk = new BatchTestByFixK();
-		fk.testSingle(8, 3, 2);
-		fk.testDouble(8, 3, 2);
+		fk.testSingle(50, 3, 2);
+	//	fk.testDouble(8, 3, 2);
 	}
 }
