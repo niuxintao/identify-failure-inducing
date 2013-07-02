@@ -23,7 +23,7 @@ public class BatchAvgTestByFreeK {
 
 	public static final int NUM = 10;
 
-	public void batchSingle(List<Integer> lengths, int value, int degree) {
+	public void batchSingle(int[] lengths, int value, int degree) {
 		List<List<double[]>> data = new ArrayList<List<double[]>>();
 		for (int i = 0; i < NUM; i++)
 			data.add(new ArrayList<double[]>());
@@ -37,7 +37,7 @@ public class BatchAvgTestByFreeK {
 		outputResult("single", data);
 	}
 
-	public void batchDouble(List<Integer> lengths, int value, int degree) {
+	public void batchDouble(int[] lengths, int value, int degree) {
 		List<List<double[]>> data = new ArrayList<List<double[]>>();
 		for (int i = 0; i < NUM; i++)
 			data.add(new ArrayList<double[]>());
@@ -187,8 +187,9 @@ public class BatchAvgTestByFreeK {
 	}
 
 	public static void main(String[] args) {
-		BatchTestByFixK fk = new BatchTestByFixK();
-		fk.testSingle(8, 3, 2);
-		fk.testDouble(8, 3, 2);
+		BatchAvgTestByFreeK fk = new BatchAvgTestByFreeK();
+		fk.batchSingle(new int[] { 8, 9, 10 }, 3, 2);
+		fk.batchDouble(new int[] { 8, 9, 10 }, 3, 2);
+
 	}
 }
