@@ -170,9 +170,6 @@ public class BatchAvgTestByFreeK {
 		a[0] /= num;
 		a[1] /= num;
 		a[2] /= num;
-		System.out.println(a[0]);
-		System.out.println(a[1]);
-		System.out.println(a[2]);
 	}
 
 	public void setOutPut(String name) {
