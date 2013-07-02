@@ -66,8 +66,9 @@ public class ChainAug extends CharacterWM {
 		if (candidateBug == null)
 			this.reset();
 		else {
-			
+			//System.out.println("sc");
 			this.currentChain = this.pool.getPaths(candidateBug);
+			//System.out.println("scend");
 			this.head = 0;
 			this.middle = 0;
 			if (currentChain != null)
@@ -86,7 +87,9 @@ public class ChainAug extends CharacterWM {
 
 	public void reset() {
 		this.currCandidate = null;
+		//System.out.println("start");
 		this.currentChain = pool.getLongestPath();
+		//System.out.println("end");
 		this.head = 0;
 		this.middle = 0;
 		if (currentChain != null)

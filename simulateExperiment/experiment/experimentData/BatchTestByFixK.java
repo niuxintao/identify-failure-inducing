@@ -79,15 +79,18 @@ public class BatchTestByFixK {
 			TestEveryAlogrithm ta, List<List<double[]>> data,
 			List<List<Tuple>> buPairs,String fileId) {
 		// for each bug pairs, inject and test and record
+	//	int i = 0;
 		for (List<Tuple> bgPair : buPairs) {
+		//	System.out.println(i);
+		//	i++;
 //			data.get(CHAIN).add(
 //					ta.expChain(experimentData.getWrongCase(), bgPair,
 //							experimentData.getParam(),
 //							experimentData.getRightSuite()));
-//			data.get(AUGCHAIN).add(
-//					ta.expAugChain(experimentData.getWrongCase(), bgPair,
-//							experimentData.getParam(),
-//							experimentData.getRightSuite()));
+			data.get(AUGCHAIN).add(
+					ta.expAugChain(experimentData.getWrongCase(), bgPair,
+							experimentData.getParam(),
+							experimentData.getRightSuite()));
 //			data.get(FEEDBACK).add(
 //					ta.expChainFeedBack(experimentData.getWrongCase(), bgPair,
 //							experimentData.getParam(),

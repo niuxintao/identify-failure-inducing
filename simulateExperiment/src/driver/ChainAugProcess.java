@@ -124,9 +124,9 @@ public class ChainAugProcess {
 		TestSuite rightSuite = new TestSuiteImplement();
 		rightSuite.addTest(rightCase);
 
-		Tuple bugModel = new Tuple(2, wrongCase);
-		bugModel.set(0, 2);
-		bugModel.set(1, 4);
+		Tuple bugModel = new Tuple(1, wrongCase);
+		bugModel.set(0, 40);
+		//bugModel.set(1, 50);
 
 		Tuple bugModel2 = new Tuple(2, wrongCase);
 		bugModel2.set(0, 2);
@@ -134,7 +134,7 @@ public class ChainAugProcess {
 
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel);
-		((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
+	//	((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
 		ChainAugProcess test = new ChainAugProcess(wrongCase, caseRunner,
 				param, rightSuite);
 		test.testWorkFlow();

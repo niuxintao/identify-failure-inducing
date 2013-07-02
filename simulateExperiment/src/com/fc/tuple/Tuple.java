@@ -118,7 +118,7 @@ public class Tuple {
 	public int getDegree() {
 		return degree;
 	}
-	
+
 	public boolean contains(Tuple tuple) {
 		// TODO Auto-generated method stub
 		if (this.degree < tuple.getDegree())
@@ -142,6 +142,24 @@ public class Tuple {
 			}
 		}
 		return false;
+	}
+
+	public List<Tuple> getDirectTuples() {
+		List<Tuple> result = new ArrayList<Tuple>();
+		for (int i = 0; i < this.degree; i++) {
+			Tuple temp = new Tuple(this.degree - 1, testCase);
+			int k = 0;
+			for (int j = 0; j < this.degree; j++) {
+				if (j == i) {
+					continue;
+				} else {
+					temp.set(k, this.getParamIndex()[j]);
+					k++;
+				}
+			}
+			result.add(temp);
+		}
+		return result;
 	}
 
 	public List<Tuple> getChildTuplesByDegree(int degree) {
@@ -277,7 +295,7 @@ public class Tuple {
 		}
 		Tuple result = new Tuple(size, A.testCase);
 		System.arraycopy(temp, 0, result.paramIndex, 0, size);
-		
+
 		return result;
 	}
 }

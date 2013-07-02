@@ -124,15 +124,16 @@ public class ChainProcess {
 		TestSuite rightSuite = new TestSuiteImplement();
 		rightSuite.addTest(rightCase);
 
-		Tuple bugModel = new Tuple(1, wrongCase);
-		bugModel.set(0, 2);
+		Tuple bugModel = new Tuple(2, wrongCase);
+		bugModel.set(0, 21);
+		bugModel.set(1, 78);
 
 		Tuple bugModel2 = new Tuple(1, wrongCase);
 		bugModel2.set(0, 4);
 
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel);
-		((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
+		//((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
 		ChainProcess test = new ChainProcess(wrongCase, caseRunner, param,
 				rightSuite);
 		test.testWorkFlow();

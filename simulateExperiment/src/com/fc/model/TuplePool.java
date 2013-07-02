@@ -221,11 +221,12 @@ public class TuplePool {
 		}
 		return root;
 	}
+	
 
 	public List<Tuple> getPaths(Tuple candidateBug) {
 		List<Tuple> result = new ArrayList<Tuple>();
 		List<Tuple> heads = this.getCandidateBugHeads();
-		List<Tuple> childs = candidateBug.getChildTuplesByDegree(candidateBug.getDegree() - 1);
+		List<Tuple> childs = candidateBug.getDirectTuples();
 		List<Tuple> candidateHeads = new ArrayList<Tuple>();
 		for (Tuple child : childs) {
 			boolean containFlag = false;
