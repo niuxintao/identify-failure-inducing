@@ -91,8 +91,8 @@ public class TuplePool {
 		List<Tuple> lastItr = new ArrayList<Tuple>();
 		for (Tuple bug : existedBugTuples) {
 			List<Tuple> thisItr = new ArrayList<Tuple>();
-			getItr(bug, lastItr, thisItr);
-			compress(thisItr);
+			getItrp(bug, lastItr, thisItr);
+			//compress(thisItr);
 			lastItr = thisItr;
 		}
 		for (Tuple tuple : lastItr) {
