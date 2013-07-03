@@ -64,9 +64,9 @@ public class Chain extends CharacterWM {
 	}
 
 	public void reset() {
-		System.out.println("start");
+//		System.out.println("start");
 		this.currentChain = pool.getLongestPath();
-		System.out.println("end");
+//		System.out.println("end");
 		this.head = 0;
 		this.middle = 0;
 		if (currentChain != null)

@@ -81,24 +81,26 @@ public class BatchTestByFixK {
 		// for each bug pairs, inject and test and record
 	//	int i = 0;
 		for (List<Tuple> bgPair : buPairs) {
-		//	System.out.println(i);
-		//	i++;
+//			System.out.println(i);
+//			i++;
 //			data.get(CHAIN).add(
 //					ta.expChain(experimentData.getWrongCase(), bgPair,
 //							experimentData.getParam(),
 //							experimentData.getRightSuite()));
+			System.out.println("start");
 			data.get(AUGCHAIN).add(
 					ta.expAugChain(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam(),
 							experimentData.getRightSuite()));
+			System.out.println("end");
 //			data.get(FEEDBACK).add(
 //					ta.expChainFeedBack(experimentData.getWrongCase(), bgPair,
 //							experimentData.getParam(),
 //							experimentData.getRightSuite()));
-			data.get(AUGFEEDBACK).add(
-					ta.expChainAugFeedBack(experimentData.getWrongCase(), bgPair,
-							experimentData.getParam(),
-							experimentData.getRightSuite()));
+//			data.get(AUGFEEDBACK).add(
+//					ta.expChainAugFeedBack(experimentData.getWrongCase(), bgPair,
+//							experimentData.getParam(),
+//							experimentData.getRightSuite()));
 			data.get(FIC).add(
 					ta.expFIC(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam()));
@@ -166,7 +168,7 @@ public class BatchTestByFixK {
 
 	public static void main(String[] args) {
 		BatchTestByFixK fk = new BatchTestByFixK();
-		fk.testSingle(50, 3, 2);
-		fk.testDouble(50, 3, 2);
+		fk.testSingle(100, 3, 2);
+		//fk.testDouble(50, 3, 2);
 	}
 }

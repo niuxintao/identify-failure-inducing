@@ -108,14 +108,43 @@ public class TuplePool {
 		for (Tuple right : existedRightTuples) {
 			List<Tuple> thisItr = new ArrayList<Tuple>();
 			Tuple reverse = right.getReverseTuple();
-			getItr(reverse, lastItr, thisItr);
-			compress(thisItr);
+			getItrp(reverse, lastItr, thisItr);
+		//	System.out.println(thisItr.size());
+		//	compress(thisItr);
+		//	System.out.println(thisItr.size());
 			lastItr = thisItr;
 		}
 		for (Tuple tuple : lastItr) {
 			result.add(tuple);
 		}
 		return result;
+	}
+
+
+	public void getItrp(Tuple tuple, List<Tuple> lastItr, List<Tuple> thisItr) {
+		List<Tuple> childs = tuple.getChildTuplesByDegree(1);
+		if (lastItr.isEmpty())
+			for (Tuple child : childs) {
+				thisItr.add(child);
+			}
+		else {
+			Iterator<Tuple> ich = childs.iterator();
+			while (ich.hasNext()) {
+				Tuple t = ich.next();
+				int index = lastItr.lastIndexOf(t);
+				if (index != -1) {
+					thisItr.add(t);
+					ich.remove();
+					lastItr.remove(index);
+				}
+			}
+			for (Tuple child : childs) {
+				for (Tuple last : lastItr) {
+					Tuple catC = child.catComm(child, last);
+					thisItr.add(catC);
+				}
+			}
+		}
 	}
 
 	public List<Tuple> getLongestPath(Tuple head, Tuple tail) {
@@ -221,12 +250,12 @@ public class TuplePool {
 		}
 		return root;
 	}
-	
 
 	public List<Tuple> getPaths(Tuple candidateBug) {
 		List<Tuple> result = new ArrayList<Tuple>();
 		List<Tuple> heads = this.getCandidateBugHeads();
-		List<Tuple> childs = candidateBug.getDirectTuples();
+		List<Tuple> childs = candidateBug.getChildTuplesByDegree(candidateBug
+				.getDegree() - 1);
 		List<Tuple> candidateHeads = new ArrayList<Tuple>();
 		for (Tuple child : childs) {
 			boolean containFlag = false;
@@ -241,7 +270,7 @@ public class TuplePool {
 			}
 		}
 		List<Tuple> tails = this.getCandidateRightTails();
-		
+
 		Tuple canHead = null;
 		Tuple canTail = null;
 		int max = -1;

@@ -176,14 +176,24 @@ public class Tuple {
 			if (stack.isFull()) {
 				result.add(stack.generateTuple(this.paramIndex, this.testCase));
 				stack.pop();
-			} else if (currentIndex == this.degree) {
-				if (stack.isEmpty())
+			} 
+//			else if (currentIndex == this.degree) {
+//				if (stack.isEmpty()){
+//					System.out.println("end1");
+//					break;
+//				}
+//				currentIndex = stack.pop() + 1;
+//				System.out.println("pop and plus 1");
+//			} 
+			else {
+				if(stack.isEmpty() && degree > this.degree
+						- currentIndex){
 					break;
-				currentIndex = stack.pop() + 1;
-			} else {
-				if (degree > stack.stackSize + testCase.getLength()
-						- currentIndex)
+				}
+				else if (degree > stack.stackSize + this.degree
+						- currentIndex){
 					currentIndex = stack.pop() + 1;
+				}
 				else {
 					stack.push(currentIndex);
 					currentIndex++;
