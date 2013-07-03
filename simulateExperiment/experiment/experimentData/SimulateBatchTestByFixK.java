@@ -48,7 +48,7 @@ public class SimulateBatchTestByFixK {
 			buPairs.add(bgPair);
 		}
 
-		doProcess(experimentData, ta, data, buPairs, "single");
+		doProcess(experimentData, ta, data, buPairs, "single-"+caseLenth+"-"+degree);
 	}
 
 	public void testDouble(int caseLenth, int value, int degree) {
@@ -73,14 +73,15 @@ public class SimulateBatchTestByFixK {
 			buPairs.add(bgPair);
 		}
 
-		doProcess(experimentData, ta, data, buPairs, "pair");
+		doProcess(experimentData, ta, data, buPairs, "pair-"+caseLenth+"-"+degree);
 	}
 
 	public void testImport(int caseLenth, int value, int degree) {
 		DataBaseOfTestCase casedata = new DataBaseOfTestCase(caseLenth, value);
 		ExperimentData experimentData = new ExperimentData(casedata);
-		List<Tuple[]> bugs = experimentData.getTwoBugs(experimentData
-				.generateBugByDegree(degree));
+		List<Tuple[]> bugs = experimentData
+				.getOneBugWithOneNewBug(experimentData
+						.generateBugByDegree(degree));
 
 		TestEveryAlogrithm ta = new TestEveryAlogrithm();
 
@@ -98,7 +99,7 @@ public class SimulateBatchTestByFixK {
 			buPairs.add(bgPair);
 		}
 
-		doProcess(experimentData, ta, data, buPairs, "import");
+		doProcess(experimentData, ta, data, buPairs, "import-"+caseLenth+"-"+degree);
 	}
 
 	private void doProcess(ExperimentData experimentData,
@@ -196,6 +197,6 @@ public class SimulateBatchTestByFixK {
 		fk.testSingle(8, 3, 4);
 
 		fk.testDouble(8, 3, 2);
-		fk.testImport(8, 3, 2);
+	//	fk.testImport(8, 3, 2);
 	}
 }

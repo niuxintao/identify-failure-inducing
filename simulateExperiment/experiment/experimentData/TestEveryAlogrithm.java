@@ -42,16 +42,16 @@ public class TestEveryAlogrithm {
 				bugs);
 	}
 
-	public double[] expTRT(TestCase wrongCase, List<Tuple> bugs, int[] param,
-			TestSuite suite) {
+	public double[] expAUGTRT(TestCase wrongCase, List<Tuple> bugs,
+			int[] param, TestSuite suite) {
 		// System.out.println("TRT");
 		CharacterizeNAProcess test = new CharacterizeNAProcess();
 		test.testWorkFlow(wrongCase, bugs, param, suite);
 		return this.getResult(test.getBugs(), test.getAdditionalSuite(), bugs);
 	}
 
-	public double[] expAUGTRT(TestCase wrongCase, List<Tuple> bugs,
-			int[] param, TestSuite suite) {
+	public double[] expTRT(TestCase wrongCase, List<Tuple> bugs, int[] param,
+			TestSuite suite) {
 		// System.out.println("AUGTRT");
 
 		PathProcess test = new PathProcess();
