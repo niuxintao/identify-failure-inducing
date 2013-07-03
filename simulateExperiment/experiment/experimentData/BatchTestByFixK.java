@@ -22,7 +22,7 @@ public class BatchTestByFixK {
 	public static final int AIFL = 9;
 
 
-	public static final int NUM = 8;
+	public static final int NUM = 10;
 
 	public BatchTestByFixK() {
 
@@ -95,10 +95,10 @@ public class BatchTestByFixK {
 //					ta.expChainFeedBack(experimentData.getWrongCase(), bgPair,
 //							experimentData.getParam(),
 //							experimentData.getRightSuite()));
-//			data.get(AUGFEEDBACK).add(
-//					ta.expChainAugFeedBack(experimentData.getWrongCase(), bgPair,
-//							experimentData.getParam(),
-//							experimentData.getRightSuite()));
+			data.get(AUGFEEDBACK).add(
+					ta.expChainAugFeedBack(experimentData.getWrongCase(), bgPair,
+							experimentData.getParam(),
+							experimentData.getRightSuite()));
 			data.get(FIC).add(
 					ta.expFIC(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam()));
@@ -151,9 +151,6 @@ public class BatchTestByFixK {
 		a[0] /= num;
 		a[1] /= num;
 		a[2] /= num;
-		System.out.println(a[0]);
-		System.out.println(a[1]);
-		System.out.println(a[2]);
 	}
 
 	public void setOutPut(String name) {
@@ -170,6 +167,6 @@ public class BatchTestByFixK {
 	public static void main(String[] args) {
 		BatchTestByFixK fk = new BatchTestByFixK();
 		fk.testSingle(50, 3, 2);
-	//	fk.testDouble(8, 3, 2);
+		fk.testDouble(50, 3, 2);
 	}
 }

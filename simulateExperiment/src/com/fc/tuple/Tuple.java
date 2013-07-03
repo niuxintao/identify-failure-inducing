@@ -181,8 +181,13 @@ public class Tuple {
 					break;
 				currentIndex = stack.pop() + 1;
 			} else {
-				stack.push(currentIndex);
-				currentIndex++;
+				if (degree > stack.stackSize + testCase.getLength()
+						- currentIndex)
+					currentIndex = stack.pop() + 1;
+				else {
+					stack.push(currentIndex);
+					currentIndex++;
+				}
 			}
 		}
 
