@@ -107,10 +107,10 @@ public class ChainProcess {
 	}
 
 	public static void main(String[] args) {
-		int[] wrong = new int[100];
-		int[] pass = new int[100];
-		int[] param = new int [100];
-		for(int i = 0; i < 100 ; i++){
+		int[] wrong = new int[8];
+		int[] pass = new int[8];
+		int[] param = new int [8];
+		for(int i = 0; i < 8 ; i++){
 			wrong[i] = 1;
 			pass[i] = 0;
 			param[i] = 3;
@@ -125,8 +125,8 @@ public class ChainProcess {
 		rightSuite.addTest(rightCase);
 
 		Tuple bugModel = new Tuple(2, wrongCase);
-		bugModel.set(0, 21);
-		bugModel.set(1, 78);
+		bugModel.set(0, 2);
+		bugModel.set(1, 3);
 
 		Tuple bugModel2 = new Tuple(1, wrongCase);
 		bugModel2.set(0, 4);
