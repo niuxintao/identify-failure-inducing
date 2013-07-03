@@ -3,6 +3,8 @@ package experimentData;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fc.TRT.CharacterizeNAProcess;
+import com.fc.TRT.PathProcess;
 import com.fc.caseRunner.CaseRunner;
 import com.fc.caseRunner.CaseRunnerWithBugInject;
 import com.fc.model.CTA;
@@ -29,7 +31,7 @@ public class TestEveryAlogrithm {
 
 	public double[] expChain(TestCase wrongCase, List<Tuple> bugs, int[] param,
 			TestSuite suite) {
-		//System.out.println("Chain");
+		// System.out.println("Chain");
 		CaseRunner caseRunner = getCaseRunner(bugs);
 
 		ChainProcess test = new ChainProcess(wrongCase, caseRunner, param,
@@ -40,9 +42,26 @@ public class TestEveryAlogrithm {
 				bugs);
 	}
 
+	public double[] expTRT(TestCase wrongCase, List<Tuple> bugs, int[] param,
+			TestSuite suite) {
+		// System.out.println("TRT");
+		CharacterizeNAProcess test = new CharacterizeNAProcess();
+		test.testWorkFlow(wrongCase, bugs, param, suite);
+		return this.getResult(test.getBugs(), test.getAdditionalSuite(), bugs);
+	}
+
+	public double[] expAUGTRT(TestCase wrongCase, List<Tuple> bugs,
+			int[] param, TestSuite suite) {
+		// System.out.println("AUGTRT");
+
+		PathProcess test = new PathProcess();
+		test.testWorkFlow(wrongCase, bugs, param, suite);
+		return this.getResult(test.getBugs(), test.getAdditionalSuite(), bugs);
+	}
+
 	public double[] expChainAugFeedBack(TestCase wrongCase, List<Tuple> bugs,
 			int[] param, TestSuite suite) {
-		//System.out.println("FeedBackAug");
+		// System.out.println("FeedBackAug");
 		CaseRunner caseRunner = getCaseRunner(bugs);
 		FeedBackAugProcess fb = new FeedBackAugProcess(wrongCase, caseRunner,
 				param, suite);
@@ -56,7 +75,7 @@ public class TestEveryAlogrithm {
 
 	public double[] expAugChain(TestCase wrongCase, List<Tuple> bugs,
 			int[] param, TestSuite suite) {
-		//System.out.println("ChainAug");
+		// System.out.println("ChainAug");
 		CaseRunner caseRunner = getCaseRunner(bugs);
 
 		ChainAugProcess test = new ChainAugProcess(wrongCase, caseRunner,
@@ -69,7 +88,7 @@ public class TestEveryAlogrithm {
 
 	public double[] expChainFeedBack(TestCase wrongCase, List<Tuple> bugs,
 			int[] param, TestSuite suite) {
-		//System.out.println("FeedBack");
+		// System.out.println("FeedBack");
 		CaseRunner caseRunner = getCaseRunner(bugs);
 		FeedBackProcess fb = new FeedBackProcess(wrongCase, caseRunner, param,
 				suite);
@@ -77,11 +96,11 @@ public class TestEveryAlogrithm {
 		TestSuite addsuite = new TestSuiteImplement();
 		for (TestCase testCase : fb.getFb().getTestCases())
 			addsuite.addTest(testCase);
-		return this.getResult(fb.getFb().getBugs(), addsuite,bugs);
+		return this.getResult(fb.getFb().getBugs(), addsuite, bugs);
 	}
 
 	public double[] expFIC(TestCase wrongCase, List<Tuple> bugs, int[] param) {
-		//System.out.println("FIC_BS");
+		// System.out.println("FIC_BS");
 		CaseRunner caseRunner = getCaseRunner(bugs);
 		FIC fic = new FIC(wrongCase, param, caseRunner);
 		fic.FicNOP();
@@ -90,7 +109,7 @@ public class TestEveryAlogrithm {
 	}
 
 	public double[] expRI(TestCase wrongCase, List<Tuple> bugs, int[] param) {
-	//	System.out.println("RI");
+		// System.out.println("RI");
 		CaseRunner caseRunner = getCaseRunner(bugs);
 
 		CorpTupleWithTestCase generate = new CorpTupleWithTestCase(wrongCase,
@@ -98,11 +117,11 @@ public class TestEveryAlogrithm {
 
 		RI ri = new RI(generate, caseRunner);
 		List<Tuple> tupleg = ri.process(wrongCase);
-		return getResult(tupleg, ri.getAddtionalTestSuite(),bugs);
+		return getResult(tupleg, ri.getAddtionalTestSuite(), bugs);
 	}
 
 	public double[] expOFOT(TestCase wrongCase, List<Tuple> bugs, int[] param) {
-		//System.out.println("OFOT");
+		// System.out.println("OFOT");
 		CaseRunner caseRunner = getCaseRunner(bugs);
 		OFOT ofot = new OFOT();
 		ofot.process(wrongCase, param, caseRunner);
@@ -110,23 +129,24 @@ public class TestEveryAlogrithm {
 		TestSuite suite = new TestSuiteImplement();
 		for (TestCase testCase : ofot.getExecuted().keySet())
 			suite.addTest(testCase);
-		return getResult(ofot.getBugs(), suite,bugs);
+		return getResult(ofot.getBugs(), suite, bugs);
 
 	}
 
-	public double[] expIterAIFL(TestCase wrongCase, List<Tuple> bugs, int[] param) {
-		//System.out.println("IterAIFL");
+	public double[] expIterAIFL(TestCase wrongCase, List<Tuple> bugs,
+			int[] param) {
+		// System.out.println("IterAIFL");
 		CorpTupleWithTestCase generate = new CorpTupleWithTestCase(wrongCase,
 				param);
 		CaseRunner caseRunner = getCaseRunner(bugs);
 		IterAIFL ifl = new IterAIFL(generate, caseRunner);
 		ifl.process(wrongCase);
-		return getResult(ifl.getBugs(), ifl.getSuite(),bugs);
+		return getResult(ifl.getBugs(), ifl.getSuite(), bugs);
 	}
 
 	public double[] expLocateGraph(TestCase wrongCase, List<Tuple> bugs,
 			int[] param, TestCase rightCase) {
-		//System.out.println("LocateGraph");
+		// System.out.println("LocateGraph");
 
 		CaseRunner caseRunner = getCaseRunner(bugs);
 		LocateGraph lg = new LocateGraph(caseRunner);
@@ -135,13 +155,13 @@ public class TestEveryAlogrithm {
 
 		List<Tuple> faidu = lg.locateErrorsInTest(rightCase, wrongCase, tuple);
 
-		return this.getResult(faidu, lg.getAddtionalTestSuite(),bugs);
+		return this.getResult(faidu, lg.getAddtionalTestSuite(), bugs);
 	}
 
 	// a covering array may make it better
 	public double[] expSpectrumBased(TestCase wrongCase, List<Tuple> bugs,
 			int[] param) {
-		//System.out.println("SpectrumBased");
+		// System.out.println("SpectrumBased");
 
 		CaseRunner caseRunner = getCaseRunner(bugs);
 
@@ -151,7 +171,8 @@ public class TestEveryAlogrithm {
 
 		sp.process(suite, param, 2);
 
-		return this.getResult(sp.getFailreIndcuing(), sp.getAddtionalSuite(),bugs);
+		return this.getResult(sp.getFailreIndcuing(), sp.getAddtionalSuite(),
+				bugs);
 	}
 
 	// hasn't think
@@ -162,7 +183,7 @@ public class TestEveryAlogrithm {
 	// need a covering array
 	public void expCTA(TestSuite suite, List<Tuple> bugs, int[] param)
 			throws Exception {
-		//System.out.println("Classified tree analysis");
+		// System.out.println("Classified tree analysis");
 		CaseRunner caseRunner = getCaseRunner(bugs);
 		for (int i = 0; i < suite.getTestCaseNum(); i++)
 			suite.getAt(i).setTestState(caseRunner.runTestCase(suite.getAt(i)));

@@ -10,17 +10,18 @@ import java.util.List;
 import com.fc.tuple.Tuple;
 
 public class SimulateBatchTestByFixK {
-	public static final int CHAIN = 0;
-	public static final int AUGCHAIN = 1;
-	public static final int FEEDBACK = 2;
-	public static final int AUGFEEDBACK = 3;
-	public static final int FIC = 4;
-	public static final int RI = 5;
-	public static final int OFOT = 6;
-	public static final int LG = 7;
-	public static final int SP = 8;
-	public static final int AIFL = 9;
-
+	// public static final int CHAIN = 0;
+	public static final int AUGCHAIN = 0;
+	// public static final int FEEDBACK = 2;
+	public static final int AUGFEEDBACK = 1;
+	public static final int FIC = 2;
+	public static final int RI = 3;
+	public static final int OFOT = 4;
+	public static final int LG = 5;
+	public static final int SP = 6;
+	public static final int AIFL = 7;
+	public static final int TRT = 8;
+	public static final int AUGTRT = 9;
 
 	public static final int NUM = 10;
 
@@ -39,23 +40,23 @@ public class SimulateBatchTestByFixK {
 		for (int i = 0; i < NUM; i++)
 			data.add(new ArrayList<double[]>());
 
-		//create bug paris
+		// create bug paris
 		List<List<Tuple>> buPairs = new ArrayList<List<Tuple>>();
-		for(Tuple tuple : bugs){
+		for (Tuple tuple : bugs) {
 			List<Tuple> bgPair = new ArrayList<Tuple>();
 			bgPair.add(tuple);
 			buPairs.add(bgPair);
 		}
-		
+
 		doProcess(experimentData, ta, data, buPairs, "single");
 	}
-	
+
 	public void testDouble(int caseLenth, int value, int degree) {
 		DataBaseOfTestCase casedata = new DataBaseOfTestCase(caseLenth, value);
 		ExperimentData experimentData = new ExperimentData(casedata);
 		List<Tuple[]> bugs = experimentData.getTwoBugs(experimentData
 				.generateBugByDegree(degree));
-		
+
 		TestEveryAlogrithm ta = new TestEveryAlogrithm();
 
 		// data record
@@ -63,25 +64,24 @@ public class SimulateBatchTestByFixK {
 		for (int i = 0; i < NUM; i++)
 			data.add(new ArrayList<double[]>());
 
-		//create bug paris
+		// create bug paris
 		List<List<Tuple>> buPairs = new ArrayList<List<Tuple>>();
-		for(Tuple[] tuple : bugs){
+		for (Tuple[] tuple : bugs) {
 			List<Tuple> bgPair = new ArrayList<Tuple>();
 			bgPair.add(tuple[0]);
 			bgPair.add(tuple[1]);
 			buPairs.add(bgPair);
 		}
-		
+
 		doProcess(experimentData, ta, data, buPairs, "pair");
 	}
-	
-	
+
 	public void testImport(int caseLenth, int value, int degree) {
 		DataBaseOfTestCase casedata = new DataBaseOfTestCase(caseLenth, value);
 		ExperimentData experimentData = new ExperimentData(casedata);
 		List<Tuple[]> bugs = experimentData.getTwoBugs(experimentData
 				.generateBugByDegree(degree));
-		
+
 		TestEveryAlogrithm ta = new TestEveryAlogrithm();
 
 		// data record
@@ -89,38 +89,38 @@ public class SimulateBatchTestByFixK {
 		for (int i = 0; i < NUM; i++)
 			data.add(new ArrayList<double[]>());
 
-		//create bug paris
+		// create bug paris
 		List<List<Tuple>> buPairs = new ArrayList<List<Tuple>>();
-		for(Tuple[] tuple : bugs){
+		for (Tuple[] tuple : bugs) {
 			List<Tuple> bgPair = new ArrayList<Tuple>();
 			bgPair.add(tuple[0]);
 			bgPair.add(tuple[1]);
 			buPairs.add(bgPair);
 		}
-		
-		doProcess(experimentData, ta, data, buPairs, "pair");
+
+		doProcess(experimentData, ta, data, buPairs, "import");
 	}
 
 	private void doProcess(ExperimentData experimentData,
 			TestEveryAlogrithm ta, List<List<double[]>> data,
-			List<List<Tuple>> buPairs,String fileId) {
+			List<List<Tuple>> buPairs, String fileId) {
 		// for each bug pairs, inject and test and record
 		for (List<Tuple> bgPair : buPairs) {
-			data.get(CHAIN).add(
-					ta.expChain(experimentData.getWrongCase(), bgPair,
+			data.get(TRT).add(
+					ta.expTRT(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam(),
 							experimentData.getRightSuite()));
 			data.get(AUGCHAIN).add(
 					ta.expAugChain(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam(),
 							experimentData.getRightSuite()));
-			data.get(FEEDBACK).add(
-					ta.expChainFeedBack(experimentData.getWrongCase(), bgPair,
+			data.get(AUGTRT).add(
+					ta.expAUGTRT(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam(),
 							experimentData.getRightSuite()));
 			data.get(AUGFEEDBACK).add(
-					ta.expChainAugFeedBack(experimentData.getWrongCase(), bgPair,
-							experimentData.getParam(),
+					ta.expChainAugFeedBack(experimentData.getWrongCase(),
+							bgPair, experimentData.getParam(),
 							experimentData.getRightSuite()));
 			data.get(FIC).add(
 					ta.expFIC(experimentData.getWrongCase(), bgPair,
@@ -135,8 +135,8 @@ public class SimulateBatchTestByFixK {
 					ta.expLocateGraph(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam(), experimentData
 									.getRightSuite().getAt(0)));
-			
-			//sp set 4 degree
+
+			// sp set 4 degree
 			data.get(SP).add(
 					ta.expSpectrumBased(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam()));
@@ -146,15 +146,15 @@ public class SimulateBatchTestByFixK {
 		}
 
 		// output result
-		this.setOutPut(fileId+"-fixK-addtion.txt");
+		this.setOutPut(fileId + "-fixK-addtion.txt");
 		for (List<double[]> da : data) {
 			outputResult(da, 0);
 		}
-		this.setOutPut(fileId+"-fixK-recall.txt");
+		this.setOutPut(fileId + "-fixK-recall.txt");
 		for (List<double[]> da : data) {
 			outputResult(da, 1);
 		}
-		this.setOutPut(fileId+"-fixK-precise.txt");
+		this.setOutPut(fileId + "-fixK-precise.txt");
 		for (List<double[]> da : data) {
 			outputResult(da, 2);
 		}
@@ -194,7 +194,7 @@ public class SimulateBatchTestByFixK {
 		fk.testSingle(8, 3, 2);
 		fk.testSingle(8, 3, 3);
 		fk.testSingle(8, 3, 4);
-		
+
 		fk.testDouble(8, 3, 2);
 		fk.testImport(8, 3, 2);
 	}

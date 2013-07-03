@@ -1,5 +1,6 @@
 package com.fc.TRT;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,39 +10,42 @@ import com.fc.testObject.TestSuite;
 import com.fc.testObject.TestSuiteImplement;
 import com.fc.tuple.Tuple;
 
-public class TestCharacterizeNA {
+public class CharacterizeNAProcess {
 	protected CaseRunner caseRunner;
 	protected CorpTupleWithTestCase generate;
 	protected TreeStruct tree;
-	Tuple bugModel;
+	protected TestSuite additionalSuite;
+	protected List<Tuple> bugs;
 	
-	public void testWorkFlow(){
-		init();
+	public void testWorkFlow(TestCase wrongCase, List<Tuple> bugs, int[] param, TestSuite rightSuite){
+		caseRunner = new CaseRunnerWithBugInject();
+		for (Tuple bug : bugs)
+			((CaseRunnerWithBugInject) caseRunner).inject(bug);
+
+		tree = new TreeStruct(wrongCase, rightSuite);
+		tree.constructTree();
+		tree.init();
+
+		generate = new CorpTupleWithTestCase(wrongCase, param);
+		
 		PathNA workMachine = new PathNA(tree,caseRunner,generate);	
 		workMachine.process();	
-		
-		List<Tuple> bugs = tree.getBugModes();
-		for(Tuple bug : bugs){
-			System.out.println(bug.toString());
-			System.out.println(bug.equals(bugModel));
-		}
-		
-		TestSuite extra = workMachine.getExtraCases();
-		System.out.println("all:"+extra.getTestCaseNum());
-		for(int i = 0 ; i < extra.getTestCaseNum(); i++){
-			System.out.println(extra.getAt(i).getStringOfTest());
-		}
+		this.bugs = tree.getBugModes();
+		additionalSuite = workMachine.getExtraCases();
 		
 	}
 	
-	public static void main(String[] args){
-		TestCharacterizeNA na = new TestCharacterizeNA();
-		na.testWorkFlow();
+	public TestSuite getAdditionalSuite() {
+		return additionalSuite;
 	}
 
-	protected void init() {
-		
-	    int[] wrong = new int[] { 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1};
+	public List<Tuple> getBugs() {
+		return bugs;
+	}
+
+	public static void main(String[] args){
+		CharacterizeNAProcess na = new CharacterizeNAProcess();
+        int[] wrong = new int[] { 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1};
 		
 		int[] wrong2 = new int[] { 2, 2, 2, 2, 2, 2,2, 2,2,2,2,2,2,2,2};
 		
@@ -64,8 +68,7 @@ public class TestCharacterizeNA {
 		TestSuite wrongSuite = new TestSuiteImplement();
 		wrongSuite.addTest(wrongCase);
 		
-		
-		bugModel = new Tuple(3, wrongCase);
+		Tuple bugModel = new Tuple(3, wrongCase);
 		bugModel.set(0, 1);
 		bugModel.set(1, 2);
 		bugModel.set(2, 4);
@@ -76,15 +79,21 @@ public class TestCharacterizeNA {
 		bugModel2.set(2, 14);
 		
 
-		caseRunner = new CaseRunnerWithBugInject();
+		CaseRunner caseRunner = new CaseRunnerWithBugInject();
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel);
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
+		List<Tuple> bugs = new ArrayList<Tuple>();
+		bugs.add(bugModel);
+		bugs.add(bugModel2);
+
+		na.testWorkFlow(wrongCase,bugs,param,rightSuite);
 		
+		for(Tuple bug : na.bugs)
+			System.out.println(bug.toString());
 		
-		tree = new TreeStruct(wrongCase,rightSuite);
-		tree.constructTree();
-		tree.init();
-		
-		generate = new CorpTupleWithTestCase(wrongCase,param);
+		System.out.println("all:" + na.additionalSuite.getTestCaseNum());
+		for (int i = 0; i < na.additionalSuite.getTestCaseNum(); i++) {
+			System.out.println(na.additionalSuite.getAt(i).getStringOfTest());
+		}
 	}
 }
