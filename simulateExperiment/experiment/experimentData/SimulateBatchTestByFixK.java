@@ -22,8 +22,9 @@ public class SimulateBatchTestByFixK {
 	public static final int AIFL = 7;
 	public static final int TRT = 8;
 	public static final int AUGTRT = 9;
+	public static final int CTA = 10;
 
-	public static final int NUM = 10;
+	public static final int NUM = 11;
 
 	public SimulateBatchTestByFixK() {
 
@@ -48,7 +49,8 @@ public class SimulateBatchTestByFixK {
 			buPairs.add(bgPair);
 		}
 
-		doProcess(experimentData, ta, data, buPairs, "single-"+caseLenth+"-"+degree);
+		doProcess(experimentData, ta, data, buPairs, "single-" + caseLenth
+				+ "-" + degree);
 	}
 
 	public void testDouble(int caseLenth, int value, int degree) {
@@ -73,7 +75,8 @@ public class SimulateBatchTestByFixK {
 			buPairs.add(bgPair);
 		}
 
-		doProcess(experimentData, ta, data, buPairs, "pair-"+caseLenth+"-"+degree);
+		doProcess(experimentData, ta, data, buPairs, "pair-" + caseLenth + "-"
+				+ degree);
 	}
 
 	public void testImport(int caseLenth, int value, int degree) {
@@ -99,7 +102,8 @@ public class SimulateBatchTestByFixK {
 			buPairs.add(bgPair);
 		}
 
-		doProcess(experimentData, ta, data, buPairs, "import-"+caseLenth+"-"+degree);
+		doProcess(experimentData, ta, data, buPairs, "import-" + caseLenth
+				+ "-" + degree);
 	}
 
 	private void doProcess(ExperimentData experimentData,
@@ -144,6 +148,14 @@ public class SimulateBatchTestByFixK {
 			data.get(AIFL).add(
 					ta.expIterAIFL(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam()));
+			try {
+				data.get(CTA).add(
+						ta.expCTA(experimentData.getWrongCase(), bgPair,
+								experimentData.getParam()));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		// output result

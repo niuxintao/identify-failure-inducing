@@ -19,7 +19,16 @@ import com.fc.testObject.TestSuiteImplement;
 import com.fc.tuple.Tuple;
 
 public class CTA {
-	public HashMap<TestCase, Integer> executed;
+	private HashMap<TestCase, Integer> executed;
+	private List<Tuple> bugs;
+
+	public HashMap<TestCase, Integer> getExecuted() {
+		return executed;
+	}
+
+	public List<Tuple> getBugs() {
+		return bugs;
+	}
 
 	public CTA() {
 		executed = new HashMap<TestCase, Integer>();
@@ -29,8 +38,9 @@ public class CTA {
 			String[] state) throws Exception {
 		FastVector attr = this.constructAttributes(paramters, classes);
 		Instances data = this.constructData(suite, attr, state);
-		System.out.println(data.numInstances());
-		this.constructClassifier(data);
+		// System.out.println(data.numInstances());
+		String tree = this.constructClassifier(data);
+		bugs = this.getBugs(tree, paramters.length);
 	}
 
 	public FastVector constructAttributes(int[] paramters, String[] classes) {
@@ -79,18 +89,17 @@ public class CTA {
 		return data;
 	}
 
-	public void constructClassifier(Instances data) throws Exception {
+	public String constructClassifier(Instances data) throws Exception {
 		J48 classifier = new J48();
 		String[] options = new String[3];
 		options[0] = "-U";
-		
-		
+
 		options[1] = "-M";
 		options[2] = "1";
 		classifier.setOptions(options);
 		classifier.setConfidenceFactor((float) 0.25);
 		classifier.buildClassifier(data);
-		System.out.println(classifier.toString());
+		return classifier.toString();
 	}
 
 	public void test() throws Exception {
@@ -133,8 +142,8 @@ public class CTA {
 			su.addTest(testCase);
 			state[cur] = testCase.testDescription() == TestCase.PASSED ? "pass"
 					: "fail";
-//			System.out.print(testCase.getStringOfTest());
-//			System.out.println(" "+state[cur]);
+			// System.out.print(testCase.getStringOfTest());
+			// System.out.println(" "+state[cur]);
 			cur++;
 		}
 		String[] classes = { "pass", "fail" };
@@ -164,7 +173,8 @@ public class CTA {
 		for (int i = 0; i < wrongCase.getLength(); i++) {
 			List<TestCase> temp = new ArrayList<TestCase>();
 			TestCase lastCase = wrongCase;
-			for (int k = 0; k < (parameters[i] - 1); k++) {
+			for (int k = 0; k < (parameters[i] - 1 > OFOT.ITERATNUMBER ? OFOT.ITERATNUMBER
+					: parameters[i] - 1); k++) {
 				TestCase casetemple = new TestCaseImplement(
 						wrongCase.getLength());
 				for (int j = 0; j < lastCase.getLength(); j++)
@@ -176,6 +186,79 @@ public class CTA {
 			suite.add(temp);
 		}
 		return suite;
+	}
+
+	public List<Tuple> getBugs(String tree, int length) {
+		List<Tuple> bugs = new ArrayList<Tuple>();
+		String[] strs = tree.split("\n");
+		List<int[]> part = new ArrayList<int[]>();
+		for (String str : strs) {
+			if (str.indexOf("=") != -1)
+				if (str.indexOf(":") == -1) { // not leaf
+					int dep = depth(str);
+					String[] va = str.split(" = ");
+					int[] com = new int[2];
+					com[0] = findNum(va[0]);
+					com[1] = findNum(va[1]);
+					part = part.subList(0, dep - 1);
+					part.add(com);
+				} else {// leaf
+					if (str.indexOf("pass") == -1) {// fail
+						int dep = depth(str);
+						List<int[]> tu = new ArrayList<int[]>();
+						tu.addAll(part.subList(0, dep - 1));
+						String[] va = str.split(" = ");
+						int[] com = new int[2];
+						com[0] = findNum(va[0]);
+						String[] vap = va[1].split(":");
+						com[1] = findNum(vap[0]);
+						tu.add(com);
+						bugs.add(this.getBug(tu, length));
+					}
+				}
+		}
+		return bugs;
+	}
+
+	public Tuple getBug(List<int[]> part, int length) {
+		TestCase testCase = new TestCaseImplement(length);
+		for (int i = 0; i < testCase.getLength(); i++)
+			testCase.set(i, 0);
+		for (int[] com : part)
+			testCase.set(com[0], com[1]);
+
+		Tuple tuple = new Tuple(part.size(), testCase);
+		for (int i = 0; i < part.size(); i++)
+			tuple.set(i, part.get(i)[0]);
+
+		return tuple;
+	}
+
+	public int depth(String str) {
+		int depth = 1;
+		for (int i = 0; i < str.length(); i++)
+			if (str.charAt(i) == '|')
+				depth++;
+		return depth;
+	}
+
+	public int findNum(String str) {
+		boolean find = false;
+		int num = 0;
+		int dig = 1;
+		for (int i = str.length() - 1; i >= 0; i--) {
+			if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
+				find = true;
+				num += (str.charAt(i) - '0') * dig;
+				dig *= 10;
+			} else {
+				if (find)
+					break;
+			}
+		}
+		if (!find)
+			return -1;
+		return num;
 	}
 
 	public static void main(String[] args) throws Exception {

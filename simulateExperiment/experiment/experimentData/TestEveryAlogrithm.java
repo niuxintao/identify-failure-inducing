@@ -169,7 +169,7 @@ public class TestEveryAlogrithm {
 		TestSuite suite = new TestSuiteImplement();
 		suite.addTest(wrongCase);
 
-		//setting 4
+		// setting 4
 		sp.process(suite, param, 4);
 
 		return this.getResult(sp.getFailreIndcuing(), sp.getAddtionalSuite(),
@@ -182,20 +182,30 @@ public class TestEveryAlogrithm {
 	}
 
 	// need a covering array
-	public void expCTA(TestSuite suite, List<Tuple> bugs, int[] param)
+	public double[] expCTA(TestCase wrongCase, List<Tuple> bugs, int[] param)
 			throws Exception {
 		// System.out.println("Classified tree analysis");
 		CaseRunner caseRunner = getCaseRunner(bugs);
-		for (int i = 0; i < suite.getTestCaseNum(); i++)
-			suite.getAt(i).setTestState(caseRunner.runTestCase(suite.getAt(i)));
+		// for (int i = 0; i < suite.getTestCaseNum(); i++)
+		// suite.getAt(i).setTestState(caseRunner.runTestCase(suite.getAt(i)));
+		// String[] classes = { "pass", "fail" };
+		// String[] state = new String[suite.getTestCaseNum()];
+		// for (int i = 0; i < suite.getTestCaseNum(); i++)
+		// state[i] = (suite.getAt(i).testDescription() == TestCase.PASSED ?
+		// "pass"
+		// : "fail");
+		// cta.process(param, classes, suite, state);
 
+		TestSuite suite = new TestSuiteImplement();
+		suite.addTest(wrongCase);
 		CTA cta = new CTA();
-		String[] classes = { "pass", "fail" };
-		String[] state = new String[suite.getTestCaseNum()];
-		for (int i = 0; i < suite.getTestCaseNum(); i++)
-			state[i] = (suite.getAt(i).testDescription() == TestCase.PASSED ? "pass"
-					: "fail");
-		cta.process(param, classes, suite, state);
+		cta.process(suite, param, caseRunner);
+
+		TestSuite add = new TestSuiteImplement();
+		for (TestCase testCase : cta.getExecuted().keySet())
+			add.addTest(testCase);
+		return this.getResult(cta.getBugs(), add, bugs);
+
 	}
 
 	private CaseRunner getCaseRunner(List<Tuple> bugs) {

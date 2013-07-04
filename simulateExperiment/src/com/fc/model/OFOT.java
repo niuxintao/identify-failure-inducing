@@ -15,7 +15,7 @@ public class OFOT {
 		return bugs;
 	}
 
-	public static int ITERATNUMBER = 5;
+	public static int ITERATNUMBER = 2;
 
 	private HashMap<TestCase, Integer> executed;
 
