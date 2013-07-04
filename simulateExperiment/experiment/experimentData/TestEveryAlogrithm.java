@@ -169,7 +169,8 @@ public class TestEveryAlogrithm {
 		TestSuite suite = new TestSuiteImplement();
 		suite.addTest(wrongCase);
 
-		sp.process(suite, param, 2);
+		//setting 4
+		sp.process(suite, param, 4);
 
 		return this.getResult(sp.getFailreIndcuing(), sp.getAddtionalSuite(),
 				bugs);

@@ -121,8 +121,8 @@ public class CharacterFeedBack {
 				for (int i = 0; i < suite.getTestCaseNum() - 1; i++) {
 					TestCase wrongCase = suite.getAt(i);
 					if (!isContainBugs(wrongCase)) {
-						System.out.println("import case: "
-								+ wrongCase.getStringOfTest());
+//						System.out.println("import case: "
+//								+ wrongCase.getStringOfTest());
 						TuplePool pool = new TuplePool(wrongCase,
 								workMachineOld.getPool().getRightSuite());
 						for (Tuple tuple : rights) {

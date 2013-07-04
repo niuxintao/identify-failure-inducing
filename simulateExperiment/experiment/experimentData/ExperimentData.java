@@ -158,8 +158,8 @@ public class ExperimentData {
 		}
 		TestCase anotherWrongCase = new TestCaseImplement();
 		((TestCaseImplement) anotherWrongCase).setTestCase(wrong);
-		System.out.println("anotherWrongCase:"
-				+ anotherWrongCase.getStringOfTest());
+//		System.out.println("anotherWrongCase:"
+//				+ anotherWrongCase.getStringOfTest());
 
 		List<Tuple> importTuples = getRoot(anotherWrongCase)
 				.getChildTuplesByDegree(2);

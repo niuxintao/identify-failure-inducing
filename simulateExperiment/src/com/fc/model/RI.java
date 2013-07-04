@@ -29,6 +29,7 @@ public class RI {
 
 	public Tuple getRelatedIndex(TestCase failCase, Tuple tuple,
 			Tuple unrelated, Tuple related) {
+		// System.out.println(tuple.toString());
 		if (tuple.getDegree() == 1)
 			return tuple;
 		else {
@@ -95,13 +96,15 @@ public class RI {
 			rela = rela.cat(rela, bug);
 			result.add(bug);
 
-
-			if (!test(rela
-					.getReverseTuple())) {
-				identified = rela;
-				suspicious = identified.getReverseTuple();
-			} else
+			if (rela.getReverseTuple().getDegree() == 0)
 				break;
+			else {
+				if (!test(rela.getReverseTuple())) {
+					identified = rela;
+					suspicious = identified.getReverseTuple();
+				} else
+					break;
+			}
 		}
 		return result;
 	}
@@ -147,7 +150,7 @@ public class RI {
 
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel1);
-	//	((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
+		// ((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
 		CorpTupleWithTestCase generate = new CorpTupleWithTestCase(wrongCase,
 				param);
 

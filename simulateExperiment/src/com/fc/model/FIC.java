@@ -50,7 +50,7 @@ public class FIC {
 		Tuple freeTuple = new Tuple(free.length, testCase);
 
 		freeTuple.setParamIndex(free);
-		Tuple noCand = freeTuple.cat(freeTuple, partBug);
+		Tuple noCand = freeTuple.catComm(freeTuple, partBug);
 
 		Tuple cand = noCand.getReverseTuple();
 		int[] Ccand = cand.getParamIndex();
@@ -115,7 +115,8 @@ public class FIC {
 			return this.tested.get(testCase);
 		else {
 			testCase.setTestState(caseRunner.runTestCase(testCase));
-			this.tested.put(testCase, testCase.testDescription() == TestCase.PASSED);
+			this.tested.put(testCase,
+					testCase.testDescription() == TestCase.PASSED);
 			extraCases.addTest(testCase);
 			return testCase.testDescription() == TestCase.PASSED;
 		}
@@ -129,7 +130,7 @@ public class FIC {
 			int index = i;
 			newCase.set(index, (testCase.getAt(index) + 1) % param[index]);
 		}
-		//extraCases.addTest(newCase);
+		// extraCases.addTest(newCase);
 		return newCase;
 	}
 
@@ -141,14 +142,15 @@ public class FIC {
 		Tuple freeTuple = new Tuple(free.length, testCase);
 
 		freeTuple.setParamIndex(free);
-		Tuple noCand = freeTuple.cat(freeTuple, partBug);
+		Tuple noCand = freeTuple.catComm(freeTuple, partBug);
+
 
 		Tuple cand = noCand.getReverseTuple();
 		int[] Ccand = cand.getParamIndex();
 		List<Integer> U = new ArrayList<Integer>();
 		U.addAll(CFree);
 
-		Tuple determine = cand.cat(cand, freeTuple);
+		Tuple determine = cand.catComm(cand, freeTuple);
 		if (Ccand == null
 				|| Ccand.length == 0
 				|| (partBug.getDegree() > 0 && !this
@@ -171,7 +173,7 @@ public class FIC {
 			Tuple Low = new Tuple(lower.length, testCase);
 			Low.setParamIndex(lower);
 
-			Tuple Temp = freeTuple.cat(freeTuple, Low);
+			Tuple Temp = freeTuple.catComm(freeTuple, Low);
 			if (this.runTest(Motivate(this.CovertTntToTnteger(Temp
 					.getParamIndex())))) {
 				high = middle;
@@ -201,7 +203,7 @@ public class FIC {
 			if (newRelatedPartBug.getDegree() == 0) {
 				break;
 			}
-			partBug = partBug.cat(partBug, newRelatedPartBug);
+			partBug = partBug.catComm(partBug, newRelatedPartBug);
 		}
 		return partBug;
 	}
@@ -222,7 +224,8 @@ public class FIC {
 			int[] tabu = CovertTntegerToInt(CTabu);
 			tuple.setParamIndex(tabu);
 
-			Tuple newCTabu = tuple.cat(tuple, bug);
+			Tuple newCTabu = tuple.catComm(tuple, bug);
+			CTabu.clear();
 			CTabu.addAll(CovertTntToTnteger(newCTabu.getParamIndex()));
 		}
 	}
@@ -241,16 +244,20 @@ public class FIC {
 
 		int[] param = new int[] { 3, 3, 3, 3, 3, 3, 3, 3 };
 
-		Tuple bugModel1 = new Tuple(2, wrongCase);
+		Tuple bugModel1 = new Tuple(3, wrongCase);
 		bugModel1.set(0, 4);
 		bugModel1.set(1, 7);
 
 		Tuple bugModel2 = new Tuple(1, wrongCase);
 		bugModel2.set(0, 3);
+		
+		Tuple bugModel3 = new Tuple(1, wrongCase);
+		bugModel3.set(0, 6);
 
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel1);
-		//((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
+		 ((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
+		 ((CaseRunnerWithBugInject) caseRunner).inject(bugModel3);
 
 		FIC fic = new FIC(wrongCase, param, caseRunner);
 		fic.FicNOP();
