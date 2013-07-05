@@ -17,57 +17,64 @@ public class CorpTupleWithTestCase {
 
 	// every tuple is responding to a testSuite
 	private List<Tuple> tuples;
+
+	private int iter;
+
+	public void addIter() {
+		iter++;
+	}
+
 	public List<Tuple> getTuples() {
 		return tuples;
 	}
 
-	private List<TestSuite> generatedTestCases; 
+	private List<TestSuite> generatedTestCases;
 
-	
 	public List<TestSuite> getGeneratedTestCases() {
 		return generatedTestCases;
 	}
 
-	private void init(TestCase wrongCase, 
-			int[] param){
+	private void init(TestCase wrongCase, int[] param) {
 		this.wrongCase = wrongCase;
 		this.param = param;
 		tuples = new ArrayList<Tuple>();
 		generatedTestCases = new ArrayList<TestSuite>();
+		iter = 0;
 	}
 
-	public CorpTupleWithTestCase(TestCase wrongCase, 
-			int[] param, List<Tuple> currentBugs) {
+	public CorpTupleWithTestCase(TestCase wrongCase, int[] param,
+			List<Tuple> currentBugs) {
 		init(wrongCase, param);
 		this.currentBugs = currentBugs;
 	}
-	public CorpTupleWithTestCase(TestCase wrongCase, 
-			int[] param) {
+
+	public CorpTupleWithTestCase(TestCase wrongCase, int[] param) {
 		init(wrongCase, param);
-		this.currentBugs = new ArrayList<Tuple> ();
+		this.currentBugs = new ArrayList<Tuple>();
 	}
 
 	/**
-	 * @param currentBugs the currentBugs to set
+	 * @param currentBugs
+	 *            the currentBugs to set
 	 */
 	public void setCurrentBugs(List<Tuple> currentBugs) {
 		this.currentBugs = currentBugs;
 	}
-	
+
 	/**
 	 * return the tested sequnce number, if not tested , return 0
-	*/
-	public int isTupleTested(Tuple tuple){
-		for(int i = 0; i < tuples.size() ; i++){
-			if(tuples.get(i).equals(tuple))
+	 */
+	public int isTupleTested(Tuple tuple) {
+		for (int i = 0; i < tuples.size(); i++) {
+			if (tuples.get(i).equals(tuple))
 				return i;
 		}
 		return -1;
 	}
 
 	public TestCase generateTestCaseContainTuple(Tuple tuple) {
-		
-		/*generate a part test case just contain the tuple*/
+
+		/* generate a part test case just contain the tuple */
 		TestCase result = new TestCaseImplement(param.length);
 		for (int i = 0; i < result.getLength(); i++) {
 			result.set(i, -1);
@@ -75,37 +82,45 @@ public class CorpTupleWithTestCase {
 		for (int i = 0; i < tuple.getDegree(); i++) {
 			result.set(tuple.getParamIndex()[i], tuple.getParamValue()[i]);
 		}
-		/*is it tested*/
+		/* is it tested */
 		int tesI = isTupleTested(tuple);
 		TestCase lastCase;
 		TestSuite suite;
-		if(tesI == -1)
-		{
+		if (tesI == -1) {
 			lastCase = wrongCase;
 			suite = new TestSuiteImplement();
 			generatedTestCases.add(suite);
 			tuples.add(tuple);
-		}
-		else
-		{
+			/* to complete the remain part */
+			for (int i = 0; i < result.getLength(); i++) {
+				if (result.getAt(i) == -1)
+					result.set(i,
+							(this.getItheElement(i, lastCase.getAt(i)) + iter)
+									% param[i]);
+			}
+		} else {
 			suite = this.generatedTestCases.get(tesI);
 			lastCase = suite.getAt(suite.getTestCaseNum() - 1);
+			/* to complete the remain part */
+			for (int i = 0; i < result.getLength(); i++) {
+				if (result.getAt(i) == -1)
+					result.set(i, this.getItheElement(i, lastCase.getAt(i)));
+			}
 		}
-		
-		/*to complete the remain part*/
-		for (int i = 0; i < result.getLength(); i++) {
-			if (result.getAt(i) == -1)
-				result.set(i, this.getItheElement(i, lastCase.getAt(i)));
-		}
-        
-		/*remove the found bug to avoid it is failing*/
+
+		// /* to complete the remain part */
+		// for (int i = 0; i < result.getLength(); i++) {
+		// if (result.getAt(i) == -1)
+		// result.set(i, this.getItheElement(i, lastCase.getAt(i)));
+		// }
+
+		/* remove the found bug to avoid it is failing */
 		removeFoundBug(result, tuple);
-		
+
 		suite.addTest(result);
 
 		return result;
 	}
-	
 
 	public boolean isTheIndexInTuple(int index, Tuple tuple) {
 		int[] indexes = tuple.getParamIndex();
@@ -154,10 +169,10 @@ public class CorpTupleWithTestCase {
 	// not equal to the orignal one
 	public int getItheElement(int index, int originalValue) {
 		int result = originalValue;
-	//	do {
-			result = (result +  1) % this.param[index];
-			//}
-		//while(result == this.wrongCase.getAt(index));
+		// do {
+		result = (result + 1) % this.param[index];
+		// }
+		// while(result == this.wrongCase.getAt(index));
 		return result;
 	}
 

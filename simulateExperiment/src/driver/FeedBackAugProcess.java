@@ -89,5 +89,6 @@ public class FeedBackAugProcess {
 
 		FeedBackAugProcess test = new FeedBackAugProcess(wrongCase, caseRunner, param, rightSuite);
 		test.testWorkFlow();
+		test.outputResult(test.fb);
 	}
 }

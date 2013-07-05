@@ -31,7 +31,7 @@ public class CharacterAugFeedBcak {
 			List<Tuple> bugs = workMachine.getPool().getExistedBugTuples();
 			boolean flag = true;
 			for (Tuple bug : bugs) {
-			//	System.out.println("validate");
+				// System.out.println("validate");
 				int validate = validateFaultyTuple(bug, workMachine, generate,
 						caseRunner);
 				// if not right, keep all the right, deal and character again.
@@ -42,7 +42,7 @@ public class CharacterAugFeedBcak {
 				}
 			}
 			if (flag) {
-			//	System.out.println("break");
+				// System.out.println("break");
 				break;
 			}
 
@@ -58,6 +58,7 @@ public class CharacterAugFeedBcak {
 					workMachine.getPool().getExistedBugTuples()
 							.add(generate.getTuples().get(i));
 			}
+			generate.addIter();
 		}
 
 		bugs.addAll(workMachine.getPool().getExistedBugTuples());
@@ -65,9 +66,9 @@ public class CharacterAugFeedBcak {
 		for (int i = 0; i < workMachine.getExtraCases().getTestCaseNum(); i++)
 			testCases.add(workMachine.getExtraCases().getAt(i));
 
-		//System.out.println("run import begin");
+		// System.out.println("run import begin");
 		runImportBugs(workMachine, generate, caseRunner);
-		//System.out.println("run import end");
+		// System.out.println("run import end");
 
 	}
 
@@ -117,27 +118,39 @@ public class CharacterAugFeedBcak {
 		 */
 		List<TestSuite> suites = generate.getGeneratedTestCases();
 		for (TestSuite suite : suites) {
-			if (suite.getAt(suite.getTestCaseNum() - 1).testDescription() == TestCase.PASSED) {
-				for (int i = 0; i < suite.getTestCaseNum() - 1; i++) {
-					TestCase wrongCase = suite.getAt(i);
-					if (!isContainBugs(wrongCase)) {
-//						System.out.println("import case: "
-//								+ wrongCase.getStringOfTest());
-						TuplePool pool = new TuplePool(wrongCase,
-								workMachineOld.getPool().getRightSuite());
-						for (Tuple tuple : rights) {
-							if (wrongCase.containsOf(tuple))
-								pool.getExistedRightTuples().add(tuple);
-						}
-						CorpTupleWithTestCase generateNew = new CorpTupleWithTestCase(
-								wrongCase, generate.getParam());
-						generateNew.setCurrentBugs(bugs);
-						ChainAug workMachine = new ChainAug(pool, generateNew);
-						process(workMachine, caseRunner, generateNew);
+			for (int i = 0; i < suite.getTestCaseNum(); i++) {
+				TestCase wrongCase = suite.getAt(i);
+				if (wrongCase.testDescription() == TestCase.FAILED
+						&& !isContainBugs(wrongCase)) {
+					TuplePool pool = new TuplePool(wrongCase, workMachineOld
+							.getPool().getRightSuite());
+					for (Tuple tuple : rights) {
+						if (wrongCase.containsOf(tuple))
+							pool.getExistedRightTuples().add(tuple);
 					}
+					CorpTupleWithTestCase generateNew = new CorpTupleWithTestCase(
+							wrongCase, generate.getParam());
+					generateNew.setCurrentBugs(bugs);
+					ChainAug workMachine = new ChainAug(pool, generateNew);
+					process(workMachine, caseRunner, generateNew);
 				}
 			}
 		}
+		/*
+		 * for (TestSuite suite : suites) { if
+		 * (suite.getAt(suite.getTestCaseNum() - 1).testDescription() ==
+		 * TestCase.PASSED) { for (int i = 0; i < suite.getTestCaseNum() - 1;
+		 * i++) { TestCase wrongCase = suite.getAt(i); if
+		 * (!isContainBugs(wrongCase)) { System.out.println("import case: " +
+		 * wrongCase.getStringOfTest()); TuplePool pool = new
+		 * TuplePool(wrongCase, workMachineOld.getPool().getRightSuite()); for
+		 * (Tuple tuple : rights) { if (wrongCase.containsOf(tuple))
+		 * pool.getExistedRightTuples().add(tuple); } CorpTupleWithTestCase
+		 * generateNew = new CorpTupleWithTestCase( wrongCase,
+		 * generate.getParam()); generateNew.setCurrentBugs(bugs); ChainAug
+		 * workMachine = new ChainAug(pool, generateNew); process(workMachine,
+		 * caseRunner, generateNew); } } } }
+		 */
 	}
 
 	public List<Tuple> getBugs() {

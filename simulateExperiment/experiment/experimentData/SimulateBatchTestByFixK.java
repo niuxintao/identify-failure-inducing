@@ -204,11 +204,11 @@ public class SimulateBatchTestByFixK {
 
 	public static void main(String[] args) {
 		SimulateBatchTestByFixK fk = new SimulateBatchTestByFixK();
-		fk.testSingle(8, 3, 2);
-		fk.testSingle(8, 3, 3);
-		fk.testSingle(8, 3, 4);
+		fk.testSingle(8, 10, 2);
+		fk.testSingle(8, 10, 3);
+		fk.testSingle(8, 10, 4);
 
-		fk.testDouble(8, 3, 2);
-		fk.testImport(8, 3, 2);
+		fk.testDouble(8, 10, 2);
+		fk.testImport(8, 10, 2);
 	}
 }
