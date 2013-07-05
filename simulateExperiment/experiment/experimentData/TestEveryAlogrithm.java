@@ -61,7 +61,6 @@ public class TestEveryAlogrithm {
 
 	public double[] expChainAugFeedBack(TestCase wrongCase, List<Tuple> bugs,
 			int[] param, TestSuite suite) {
-		// System.out.println("FeedBackAug");
 		CaseRunner caseRunner = getCaseRunner(bugs);
 		FeedBackAugProcess fb = new FeedBackAugProcess(wrongCase, caseRunner,
 				param, suite);

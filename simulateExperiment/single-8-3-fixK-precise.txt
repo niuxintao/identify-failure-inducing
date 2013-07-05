@@ -9,3 +9,143 @@ NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN 
 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+FeedBackAug
+[ 1 , 1 , 1 , 1 , - , - , - , - ]
+FeedBackAug
+[ 1 , 1 , 1 , - , 1 , - , - , - ]
+FeedBackAug
+[ 1 , 1 , 1 , - , - , 1 , - , - ]
+FeedBackAug
+[ 1 , 1 , 1 , - , - , - , 1 , - ]
+FeedBackAug
+[ 1 , 1 , 1 , - , - , - , - , 1 ]
+FeedBackAug
+[ 1 , 1 , - , 1 , 1 , - , - , - ]
+FeedBackAug
+[ 1 , 1 , - , 1 , - , 1 , - , - ]
+FeedBackAug
+[ 1 , 1 , - , 1 , - , - , 1 , - ]
+FeedBackAug
+[ 1 , 1 , - , 1 , - , - , - , 1 ]
+FeedBackAug
+[ 1 , 1 , - , - , 1 , 1 , - , - ]
+FeedBackAug
+[ 1 , 1 , - , - , 1 , - , 1 , - ]
+FeedBackAug
+[ 1 , 1 , - , - , 1 , - , - , 1 ]
+FeedBackAug
+[ 1 , 1 , - , - , - , 1 , 1 , - ]
+FeedBackAug
+[ 1 , 1 , - , - , - , 1 , - , 1 ]
+FeedBackAug
+[ 1 , 1 , - , - , - , - , 1 , 1 ]
+FeedBackAug
+[ 1 , - , 1 , 1 , 1 , - , - , - ]
+FeedBackAug
+[ 1 , - , 1 , 1 , - , 1 , - , - ]
+FeedBackAug
+[ 1 , - , 1 , 1 , - , - , 1 , - ]
+FeedBackAug
+[ 1 , - , 1 , 1 , - , - , - , 1 ]
+FeedBackAug
+[ 1 , - , 1 , - , 1 , 1 , - , - ]
+FeedBackAug
+[ 1 , - , 1 , - , 1 , - , 1 , - ]
+FeedBackAug
+[ 1 , - , 1 , - , 1 , - , - , 1 ]
+FeedBackAug
+[ 1 , - , 1 , - , - , 1 , 1 , - ]
+FeedBackAug
+[ 1 , - , 1 , - , - , 1 , - , 1 ]
+FeedBackAug
+[ 1 , - , 1 , - , - , - , 1 , 1 ]
+FeedBackAug
+[ 1 , - , - , 1 , 1 , 1 , - , - ]
+FeedBackAug
+[ 1 , - , - , 1 , 1 , - , 1 , - ]
+FeedBackAug
+[ 1 , - , - , 1 , 1 , - , - , 1 ]
+FeedBackAug
+[ 1 , - , - , 1 , - , 1 , 1 , - ]
+FeedBackAug
+[ 1 , - , - , 1 , - , 1 , - , 1 ]
+FeedBackAug
+[ 1 , - , - , 1 , - , - , 1 , 1 ]
+FeedBackAug
+[ 1 , - , - , - , 1 , 1 , 1 , - ]
+FeedBackAug
+[ 1 , - , - , - , 1 , 1 , - , 1 ]
+FeedBackAug
+[ 1 , - , - , - , 1 , - , 1 , 1 ]
+FeedBackAug
+[ 1 , - , - , - , - , 1 , 1 , 1 ]
+FeedBackAug
+[ - , 1 , 1 , 1 , 1 , - , - , - ]
+FeedBackAug
+[ - , 1 , 1 , 1 , - , 1 , - , - ]
+FeedBackAug
+[ - , 1 , 1 , 1 , - , - , 1 , - ]
+FeedBackAug
+[ - , 1 , 1 , 1 , - , - , - , 1 ]
+FeedBackAug
+[ - , 1 , 1 , - , 1 , 1 , - , - ]
+FeedBackAug
+[ - , 1 , 1 , - , 1 , - , 1 , - ]
+FeedBackAug
+[ - , 1 , 1 , - , 1 , - , - , 1 ]
+FeedBackAug
+[ - , 1 , 1 , - , - , 1 , 1 , - ]
+FeedBackAug
+[ - , 1 , 1 , - , - , 1 , - , 1 ]
+FeedBackAug
+[ - , 1 , 1 , - , - , - , 1 , 1 ]
+FeedBackAug
+[ - , 1 , - , 1 , 1 , 1 , - , - ]
+FeedBackAug
+[ - , 1 , - , 1 , 1 , - , 1 , - ]
+FeedBackAug
+[ - , 1 , - , 1 , 1 , - , - , 1 ]
+FeedBackAug
+[ - , 1 , - , 1 , - , 1 , 1 , - ]
+FeedBackAug
+[ - , 1 , - , 1 , - , 1 , - , 1 ]
+FeedBackAug
+[ - , 1 , - , 1 , - , - , 1 , 1 ]
+FeedBackAug
+[ - , 1 , - , - , 1 , 1 , 1 , - ]
+FeedBackAug
+[ - , 1 , - , - , 1 , 1 , - , 1 ]
+FeedBackAug
+[ - , 1 , - , - , 1 , - , 1 , 1 ]
+FeedBackAug
+[ - , 1 , - , - , - , 1 , 1 , 1 ]
+FeedBackAug
+[ - , - , 1 , 1 , 1 , 1 , - , - ]
+FeedBackAug
+[ - , - , 1 , 1 , 1 , - , 1 , - ]
+FeedBackAug
+[ - , - , 1 , 1 , 1 , - , - , 1 ]
+FeedBackAug
+[ - , - , 1 , 1 , - , 1 , 1 , - ]
+FeedBackAug
+[ - , - , 1 , 1 , - , 1 , - , 1 ]
+FeedBackAug
+[ - , - , 1 , 1 , - , - , 1 , 1 ]
+FeedBackAug
+[ - , - , 1 , - , 1 , 1 , 1 , - ]
+FeedBackAug
+[ - , - , 1 , - , 1 , 1 , - , 1 ]
+FeedBackAug
+[ - , - , 1 , - , 1 , - , 1 , 1 ]
+FeedBackAug
+[ - , - , 1 , - , - , 1 , 1 , 1 ]
+FeedBackAug
+[ - , - , - , 1 , 1 , 1 , 1 , - ]
+FeedBackAug
+[ - , - , - , 1 , 1 , 1 , - , 1 ]
+FeedBackAug
+[ - , - , - , 1 , 1 , - , 1 , 1 ]
+FeedBackAug
+[ - , - , - , 1 , - , 1 , 1 , 1 ]
+FeedBackAug
+[ - , - , - , - , 1 , 1 , 1 , 1 ]

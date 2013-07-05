@@ -58,11 +58,11 @@ public class FeedBackAugProcess {
 	}
 
 	public static void main(String[] args) {
-		int[] wrong = new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		int[] wrong = new int[] { 1, 1, 1, 1, 1, 1, 1, 1 };
 
-		int[] wrong2 = new int[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
+		int[] wrong2 = new int[] { 2, 2, 2, 2, 2, 2, 2, 2 };
 
-		int[] pass = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		int[] pass = new int[] { 0, 0, 0, 0, 0, 0, 0, 0};
 		TestCase rightCase = new TestCaseImplement();
 		((TestCaseImplement) rightCase).setTestCase(pass);
 		TestCase wrongCase = new TestCaseImplement();
@@ -74,18 +74,14 @@ public class FeedBackAugProcess {
 		TestSuite rightSuite = new TestSuiteImplement();
 		rightSuite.addTest(rightCase);
 
-		int[] param = new int[] { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-				10, 10, 10, 10 };
+		int[] param = new int[] { 10, 10, 10, 10, 10, 10, 10, 10};
 
-		Tuple bugModel = new Tuple(3, wrongCase);
-		bugModel.set(0, 1);
-		bugModel.set(1, 2);
-		bugModel.set(2, 4);
+		Tuple bugModel = new Tuple(2, wrongCase);
+		bugModel.set(0, 0);
+		bugModel.set(1, 4);
 
-		Tuple bugModel2 = new Tuple(3, wrongCase2);
-		bugModel2.set(0, 12);
-		bugModel2.set(1, 13);
-		bugModel2.set(2, 14);
+		Tuple bugModel2 = new Tuple(1, wrongCase2);
+		bugModel2.set(0, 4);
 
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel);

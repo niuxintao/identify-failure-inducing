@@ -33,18 +33,21 @@ public class OFOT {
 	public void process(TestCase wrongCase, int[] parameters, CaseRunner runner) {
 		List<List<TestCase>> array = this.generateSuiteArray(wrongCase,
 				parameters);
+		boolean generatedNew = false;
 		for (List<TestCase> list : array) {
 			for (TestCase testCase : list) {
 				if (executed.containsKey(testCase))
 					testCase.setTestState(executed.get(testCase));
 				else {
+					generatedNew = true;
 					testCase.setTestState(runner.runTestCase(testCase));
 					executed.put(testCase, testCase.testDescription());
 				}
 			}
 		}
-		
-		analysis(array, wrongCase, parameters, runner);
+
+		if (generatedNew)
+			analysis(array, wrongCase, parameters, runner);
 	}
 
 	public void analysis(List<List<TestCase>> array, TestCase wrongCase,
@@ -68,7 +71,6 @@ public class OFOT {
 
 			} else {
 				// failure-inducing + 1
-				System.out.println("aa");
 				Tuple tem = new Tuple(1, wrongCase);
 				tem.set(0, i);
 				tuple = tuple.cat(tuple, tem);
@@ -107,7 +109,7 @@ public class OFOT {
 		int[] wrong = new int[] { 1, 1, 1, 1, 1, 1, 1, 1 };
 		TestCase wrongCase = new TestCaseImplement();
 		((TestCaseImplement) wrongCase).setTestCase(wrong);
-		
+
 		int[] wrong2 = new int[] { 2, 2, 2, 2, 2, 2, 2, 2 };
 		TestCase wrongCase2 = new TestCaseImplement();
 		((TestCaseImplement) wrongCase2).setTestCase(wrong2);
@@ -136,7 +138,7 @@ public class OFOT {
 
 		for (TestCase cases : ofot.executed.keySet()) {
 			System.out.print(cases.getStringOfTest());
-			System.out.println(" " +cases.testDescription());
+			System.out.println(" " + cases.testDescription());
 		}
 
 	}

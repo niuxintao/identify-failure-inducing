@@ -2,7 +2,6 @@ package experimentData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.fc.caseRunner.CaseRunner;
 import com.fc.caseRunner.CaseRunnerWithBugInject;
@@ -148,21 +147,21 @@ public class ExperimentData {
 
 	public List<Tuple[]> getOneBugWithOneNewBug(List<Tuple> tuples) {
 		int[] wrong = new int[param.length];
-		Random random = new Random();
+		// Random random = new Random();
 		for (int i = 0; i < param.length; i++) {
-			int a = random.nextInt(3);
-			if (a == 0)
-				wrong[i] = 2 + 1;
-			else
-				wrong[i] = 2;
+			// int a = random.nextInt(3);
+			// if (a == 0)
+			// wrong[i] = 2 + 1;
+			// else
+			wrong[i] = 2;
 		}
 		TestCase anotherWrongCase = new TestCaseImplement();
 		((TestCaseImplement) anotherWrongCase).setTestCase(wrong);
-//		System.out.println("anotherWrongCase:"
-//				+ anotherWrongCase.getStringOfTest());
+		// System.out.println("anotherWrongCase:"
+		// + anotherWrongCase.getStringOfTest());
 
 		List<Tuple> importTuples = getRoot(anotherWrongCase)
-				.getChildTuplesByDegree(2);
+				.getChildTuplesByDegree(1);
 
 		List<Tuple[]> result = new ArrayList<Tuple[]>();
 		for (Tuple tuple : tuples) {
