@@ -103,7 +103,7 @@ public class CTA {
 	}
 
 	public void test() throws Exception {
-		int[] parameters = new int[] { 3, 3, 3, 3, 3, 3, 3, 3 };
+		int[] parameters = new int[] { 10, 10, 10, 10, 10, 10, 10, 10 };
 		int[] wrong = new int[] { 1, 1, 1, 1, 1, 1, 1, 1 };
 		TestCase wrongCase = new TestCaseImplement();
 		((TestCaseImplement) wrongCase).setTestCase(wrong);
@@ -124,6 +124,9 @@ public class CTA {
 		suite.addTest(wrongCase);
 
 		this.process(suite, parameters, caseRunner);
+		
+		for(Tuple tuple : this.getBugs())
+		System.out.println(tuple.toString());
 	}
 
 	public void process(TestSuite suite, int[] parameters, CaseRunner runner)

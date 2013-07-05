@@ -149,9 +149,12 @@ public class SimulateBatchTestByFixK {
 					ta.expIterAIFL(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam()));
 			try {
-				data.get(CTA).add(
-						ta.expCTA(experimentData.getWrongCase(), bgPair,
-								experimentData.getParam()));
+				int[] param = new int[experimentData.getParam().length];
+				for (int i = 0; i < param.length; i++)
+					param[i] = 3;
+				data.get(CTA)
+						.add(ta.expCTA(experimentData.getWrongCase(), bgPair,
+								param));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
