@@ -110,6 +110,10 @@ public class SimulateBatchTestByFixK {
 			TestEveryAlogrithm ta, List<List<double[]>> data,
 			List<List<Tuple>> buPairs, String fileId) {
 		// for each bug pairs, inject and test and record
+		int[] param = new int[experimentData.getParam().length];
+		for (int i = 0; i < param.length; i++)
+			param[i] = 3;
+		
 		for (List<Tuple> bgPair : buPairs) {
 			data.get(TRT).add(
 					ta.expTRT(experimentData.getWrongCase(), bgPair,
@@ -149,9 +153,7 @@ public class SimulateBatchTestByFixK {
 					ta.expIterAIFL(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam()));
 			try {
-				int[] param = new int[experimentData.getParam().length];
-				for (int i = 0; i < param.length; i++)
-					param[i] = 3;
+	
 				data.get(CTA)
 						.add(ta.expCTA(experimentData.getWrongCase(), bgPair,
 								param));
@@ -208,8 +210,8 @@ public class SimulateBatchTestByFixK {
 	public static void main(String[] args) {
 		SimulateBatchTestByFixK fk = new SimulateBatchTestByFixK();
 		fk.testSingle(8, 10, 2);
-		fk.testSingle(8, 10, 3);
-		fk.testSingle(8, 10, 4);
+		//fk.testSingle(8, 10, 3);
+		//fk.testSingle(8, 10, 4);
 
 		fk.testDouble(8, 10, 2);
 		fk.testImport(8, 10, 2);
