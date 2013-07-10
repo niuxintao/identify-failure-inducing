@@ -77,6 +77,25 @@ public class SimulateBatchTestByFixK {
 
 		doProcess(experimentData, ta, data, buPairs, "pair-" + caseLenth + "-"
 				+ degree);
+		
+		this.setOutPut("pair-" + "-fixK-recall-avg.txt");
+		for (List<double[]> da : data) {
+			double mean = 0;
+			for(double[] i : da){
+				mean += i[1];
+			}
+			mean /= da.size();
+			System.out.println(mean);
+		}
+		this.setOutPut("pair-" + "-fixK-precise-avg.txt");
+		for (List<double[]> da : data) {
+			double mean = 0;
+			for(double[] i : da){
+				mean += i[2];
+			}
+			mean /= da.size();
+			System.out.println(mean);
+		}
 	}
 
 	public void testImport(int caseLenth, int value, int degree) {
@@ -104,6 +123,26 @@ public class SimulateBatchTestByFixK {
 
 		doProcess(experimentData, ta, data, buPairs, "import-" + caseLenth
 				+ "-" + degree);
+		
+		this.setOutPut("import-" + "-fixK-recall-avg.txt");
+		for (List<double[]> da : data) {
+			double mean = 0;
+			for(double[] i : da){
+				mean += i[1];
+			}
+			mean /= da.size();
+			System.out.println(mean);
+		}
+		this.setOutPut("import-" + "-fixK-precise-avg.txt");
+		for (List<double[]> da : data) {
+			double mean = 0;
+			for(double[] i : da){
+				mean += i[2];
+			}
+			mean /= da.size();
+			System.out.println(mean);
+		}
+		
 	}
 
 	private void doProcess(ExperimentData experimentData,
