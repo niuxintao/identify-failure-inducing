@@ -252,7 +252,7 @@ public class SimulateBatchTestByFixK {
 		//fk.testSingle(8, 10, 3);
 		//fk.testSingle(8, 10, 4);
 
-		//fk.testDouble(8, 10, 2);
-		//fk.testImport(8, 10, 2);
+		fk.testDouble(8, 10, 2);
+		fk.testImport(8, 10, 2);
 	}
 }

@@ -32,16 +32,16 @@ public class SpectrumBased {
 
 	public void process(TestSuite suite, int[] parameters, int degree) {
 		TestSuite iteratSuite = suite;
-//		for(int i = 0 ; i < iteratSuite.getTestCaseNum() ; i ++)
-//			System.out.println(iteratSuite.getAt(i).getStringOfTest());
+		// for(int i = 0 ; i < iteratSuite.getTestCaseNum() ; i ++)
+		// System.out.println(iteratSuite.getAt(i).getStringOfTest());
 		List<Tuple> pi = new ArrayList<Tuple>();
 		List<Tuple> tway = getTwayTuplesInTestSuite(iteratSuite, degree);
 		tway = this.removeInPassed(tway, suite);
 		tway = this.rank(tway, suite);
-		
-//		for (Tuple tuple : tway) {
-//			System.out.println(tuple.toString());
-//		}
+
+		// for (Tuple tuple : tway) {
+		// System.out.println(tuple.toString());
+		// }
 
 		while (true) {
 			if (tway.size() != 0 && (tway.size() < pi.size() || pi.size() == 0)) {
@@ -207,11 +207,21 @@ public class SpectrumBased {
 			}
 			if (flag) {
 				next.add(tuple);
-				Iterator<Tuple> iter = pi.iterator();
-				while (iter.hasNext()) {
-					Tuple tuplef = iter.next();
-					if (tuplef.contains(tuple))
-						iter.remove();
+				// Iterator<Tuple> iter = pi.iterator();
+				// while (iter.hasNext()) {
+				// Tuple tuplef = iter.next();
+				// if (tuplef.contains(tuple))
+				// iter.remove();
+				// }
+			}
+		}
+		Iterator<Tuple> iter = pi.iterator();
+		while (iter.hasNext()) {
+			Tuple tuplef = iter.next();
+			for (Tuple tuple : next) {
+				if (tuplef.contains(tuple)) {
+					iter.remove();
+					break;
 				}
 			}
 		}
@@ -235,9 +245,7 @@ public class SpectrumBased {
 			if (n >= TOPNUMBER)
 				break;
 			Tuple tuple = iter.next();
-			// System.out.println(tuple.toString());
 			TestCase testCase = generateCase(tuple, parameter, suite, pi);
-
 			if (testCase == null) {
 				failure_inducing.add(tuple);
 				return null;
@@ -293,9 +301,21 @@ public class SpectrumBased {
 			if (ITERATENUMBER < 0)
 				break;
 			int i = new Random().nextInt(parameter.length);
+			int k = 0;
 			while (isTupleContainParameterValue(tuple, i, result.getAt(i))) {
+				// System.out.println(tuple.toString());
+				// System.out.println(i);
+				// System.out.println(parameter.length);
 				i = (i + 1) % parameter.length;
+				k++;
+				if (k == parameter.length) {
+					ITERATENUMBER = -1;
+					break;
+				}
 			}
+			if (k == parameter.length)
+				break;
+
 			int value = result.getAt(i);
 			float min = -1;
 			// float cur = suspiciousO()
@@ -395,10 +415,9 @@ public class SpectrumBased {
 	}
 
 	public static void main(String[] args) {
-		int[][] cases = new int[][] { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+		int[][] cases = new int[][] { { 1, 1, 1, 1, 1, 1, 1, 1 } };
 		TestSuite suite = new TestSuiteImplement();
-		int[] parameters = new int[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+		int[] parameters = new int[] { 3, 3, 3, 3, 3, 3, 3, 3 };
 
 		for (int i = 0; i < cases.length; i++) {
 			int[] testCase = cases[i];
@@ -414,11 +433,10 @@ public class SpectrumBased {
 
 		Tuple bugModel1 = new Tuple(2, suite.getAt(0));
 		bugModel1.set(0, 2);
-		bugModel1.set(1, 5);
+		bugModel1.set(1, 4);
 
-		Tuple bugModel2 = new Tuple(2, suite.getAt(0));
-		bugModel2.set(0, 2);
-		bugModel2.set(1, 3);
+		Tuple bugModel2 = new Tuple(1, suite.getAt(0));
+		bugModel2.set(0, 3);
 
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel1);
@@ -426,7 +444,8 @@ public class SpectrumBased {
 
 		SpectrumBased sp = new SpectrumBased(caseRunner);
 
-		sp.process(suite, parameters, 2);
+		sp.process(suite, parameters, 4);
+
 		if (sp.failure_inducing == null)
 			System.out.println("no t way failure inducing tuples:");
 		else {
