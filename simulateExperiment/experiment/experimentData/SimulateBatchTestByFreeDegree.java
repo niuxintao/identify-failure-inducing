@@ -115,8 +115,8 @@ public class SimulateBatchTestByFreeDegree {
 
 			// sp set 4 degree
 			add(data.get(SP), ta.expSpectrumBased(
-					experimentData.getWrongCase(), bgPair,
-					experimentData.getParam()));
+					experimentData.getWrongCase(), bgPair, param,  bgPair.get(0)
+					.getDegree()));
 			add(data.get(AIFL), ta.expIterAIFL(experimentData.getWrongCase(),
 					bgPair, experimentData.getParam()));
 			try {
@@ -165,6 +165,6 @@ public class SimulateBatchTestByFreeDegree {
 
 	public static void main(String[] args) {
 		SimulateBatchTestByFreeDegree fk = new SimulateBatchTestByFreeDegree();
-		fk.batchTest(8, 10, new int[] {1, 2, 3, 4, 5, 6, 7, 8});
+		fk.batchTest(8, 10, new int[] { 1, 2, 3, 4, 5, 6, 7, 8 });
 	}
 }

@@ -187,7 +187,7 @@ public class SimulateBatchTestByFixK {
 			// sp set 4 degree
 			data.get(SP).add(
 					ta.expSpectrumBased(experimentData.getWrongCase(), bgPair,
-							experimentData.getParam()));
+							param, 2));
 			data.get(AIFL).add(
 					ta.expIterAIFL(experimentData.getWrongCase(), bgPair,
 							experimentData.getParam()));

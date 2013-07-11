@@ -159,7 +159,7 @@ public class TestEveryAlogrithm {
 
 	// a covering array may make it better
 	public double[] expSpectrumBased(TestCase wrongCase, List<Tuple> bugs,
-			int[] param) {
+			int[] param , int degree) {
 		// System.out.println("SpectrumBased");
 
 		CaseRunner caseRunner = getCaseRunner(bugs);
@@ -169,7 +169,7 @@ public class TestEveryAlogrithm {
 		suite.addTest(wrongCase);
 
 		// setting 4
-		sp.process(suite, param, 4);
+		sp.process(suite, param, degree);
 
 		return this.getResult(sp.getFailreIndcuing(), sp.getAddtionalSuite(),
 				bugs);
@@ -290,7 +290,7 @@ public class TestEveryAlogrithm {
 		this.expRI(wrongCase, bugs, param);
 		this.expOFOT(wrongCase, bugs, param);
 		this.expIterAIFL(wrongCase, bugs, param);
-		this.expSpectrumBased(wrongCase, bugs, param);
+		this.expSpectrumBased(wrongCase, bugs, param, 2);
 		this.expLocateGraph(wrongCase, bugs, param, rightCase);
 	}
 

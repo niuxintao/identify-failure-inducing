@@ -144,7 +144,7 @@ public class BatchAvgTestByFreeK {
 							.getRightSuite().getAt(0)));
 			add(data.get(SP), ta.expSpectrumBased(
 					experimentData.getWrongCase(), bgPair,
-					experimentData.getParam()));
+					experimentData.getParam(), 2));
 			add(data.get(AIFL), ta.expIterAIFL(experimentData.getWrongCase(),
 					bgPair, experimentData.getParam()));
 		}

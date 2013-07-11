@@ -416,12 +416,13 @@ public class SpectrumBased {
 		bugModel1.set(0, 2);
 		bugModel1.set(1, 5);
 
-		Tuple bugModel2 = new Tuple(1, suite.getAt(0));
-		bugModel2.set(0, 3);
+		Tuple bugModel2 = new Tuple(2, suite.getAt(0));
+		bugModel2.set(0, 2);
+		bugModel2.set(1, 3);
 
 		CaseRunner caseRunner = new CaseRunnerWithBugInject();
 		((CaseRunnerWithBugInject) caseRunner).inject(bugModel1);
-		// ((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
+		 ((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
 
 		SpectrumBased sp = new SpectrumBased(caseRunner);
 
