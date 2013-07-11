@@ -203,7 +203,9 @@ public class TestEveryAlogrithm {
 		TestSuite add = new TestSuiteImplement();
 		for (TestCase testCase : cta.getExecuted().keySet())
 			add.addTest(testCase);
-		return this.getResult(cta.getBugs(), add, bugs);
+		double[] result = this.getResult(cta.getBugs(), add, bugs);
+		result[0] -= 1;
+		return result;
 
 	}
 
