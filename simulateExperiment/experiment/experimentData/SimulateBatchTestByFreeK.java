@@ -103,6 +103,7 @@ public class SimulateBatchTestByFreeK {
 				add(data.get(TRT), ta.expTRT(experimentData.getWrongCase(),
 						bgPair, experimentData.getParam(),
 						experimentData.getRightSuite()));
+			if (k < 140)
 			add(data.get(AUGCHAIN), ta.expAugChain(
 					experimentData.getWrongCase(), bgPair,
 					experimentData.getParam(), experimentData.getRightSuite()));
@@ -111,15 +112,20 @@ public class SimulateBatchTestByFreeK {
 						experimentData.getWrongCase(), bgPair,
 						experimentData.getParam(),
 						experimentData.getRightSuite()));
+			if (k < 140)
 			add(data.get(AUGFEEDBACK), ta.expChainAugFeedBack(
 					experimentData.getWrongCase(), bgPair,
 					experimentData.getParam(), experimentData.getRightSuite()));
+			if (k < 140)
 			add(data.get(FIC), ta.expFIC(experimentData.getWrongCase(), bgPair,
 					experimentData.getParam()));
+			if (k < 140)
 			add(data.get(RI), ta.expRI(experimentData.getWrongCase(), bgPair,
 					experimentData.getParam()));
+			if (k < 140)
 			add(data.get(OFOT), ta.expOFOT(experimentData.getWrongCase(),
 					bgPair, experimentData.getParam()));
+			if (k < 140)
 			add(data.get(LG), ta.expLocateGraph(experimentData.getWrongCase(),
 					bgPair, experimentData.getParam(), experimentData
 							.getRightSuite().getAt(0)));
@@ -133,7 +139,7 @@ public class SimulateBatchTestByFreeK {
 				add(data.get(AIFL), ta.expIterAIFL(
 						experimentData.getWrongCase(), bgPair,
 						experimentData.getParam()));
-		//	if (k < 30)
+			if (k < 140)
 				try {
 
 					add(data.get(CTA), ta.expCTA(experimentData.getWrongCase(),
@@ -266,7 +272,7 @@ public class SimulateBatchTestByFreeK {
 
 	public static void main(String[] args) {
 		SimulateBatchTestByFreeK fk = new SimulateBatchTestByFreeK();
-		fk.batchTest(new int[] { 8, 9, 10, 12, 15, 20, 30, 40 }, 10, 2);
+		fk.batchTest(new int[] {120 }, 10, 2);
 		// fk.batchTest(new int[] { 8 , 9 , 10 , 12 , 15 , 20 , 30 , 40 , 60,
 		// 100 }, 10,2 );
 	}
