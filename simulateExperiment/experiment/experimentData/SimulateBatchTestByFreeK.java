@@ -6,6 +6,12 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import com.fc.tuple.Tuple;
 
@@ -92,46 +98,109 @@ public class SimulateBatchTestByFreeK {
 			param[i] = 3;
 
 		for (List<Tuple> bgPair : buPairs) {
-			add(data.get(TRT), ta.expTRT(experimentData.getWrongCase(), bgPair,
-					experimentData.getParam(), experimentData.getRightSuite()));
-			add(data.get(AUGCHAIN), ta.expAugChain(
-					experimentData.getWrongCase(), bgPair,
-					experimentData.getParam(), experimentData.getRightSuite()));
-			add(data.get(AUGTRT), ta.expAUGTRT(experimentData.getWrongCase(),
-					bgPair, experimentData.getParam(),
-					experimentData.getRightSuite()));
-			add(data.get(AUGFEEDBACK), ta.expChainAugFeedBack(
-					experimentData.getWrongCase(), bgPair,
-					experimentData.getParam(), experimentData.getRightSuite()));
-			add(data.get(FIC), ta.expFIC(experimentData.getWrongCase(), bgPair,
-					experimentData.getParam()));
-			add(data.get(RI), ta.expRI(experimentData.getWrongCase(), bgPair,
-					experimentData.getParam()));
-			add(data.get(OFOT), ta.expOFOT(experimentData.getWrongCase(),
-					bgPair, experimentData.getParam()));
-			add(data.get(LG), ta.expLocateGraph(experimentData.getWrongCase(),
-					bgPair, experimentData.getParam(), experimentData
-							.getRightSuite().getAt(0)));
-
-			// sp set 4 degree
-			add(data.get(SP), ta.expSpectrumBased(
-					experimentData.getWrongCase(), bgPair, param,  bgPair.get(0)
-					.getDegree()));
-			add(data.get(AIFL), ta.expIterAIFL(experimentData.getWrongCase(),
-					bgPair, experimentData.getParam()));
-			try {
-
-				add(data.get(CTA),
-						ta.expCTA(experimentData.getWrongCase(), bgPair, param));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			data = this.exec(experimentData, ta, data, bgPair, param, TRT);
+			data = this.exec(experimentData, ta, data, bgPair, param, AUGCHAIN);
+			data = this.exec(experimentData, ta, data, bgPair, param, AUGTRT);
+			data = this.exec(experimentData, ta, data, bgPair, param,
+					AUGFEEDBACK);
+			data = this.exec(experimentData, ta, data, bgPair, param, FIC);
+			data = this.exec(experimentData, ta, data, bgPair, param, RI);
+			data = this.exec(experimentData, ta, data, bgPair, param, OFOT);
+			data = this.exec(experimentData, ta, data, bgPair, param, LG);
+			data = this.exec(experimentData, ta, data, bgPair, param, SP);
+			data = this.exec(experimentData, ta, data, bgPair, param, AIFL);
+			data = this.exec(experimentData, ta, data, bgPair, param, CTA);
 		}
 
 		for (double[] da : data) {
 			getAvg(da, buPairs.size());
 		}
+	}
+
+	public List<double[]> exec(final ExperimentData experimentData,
+			final TestEveryAlogrithm ta, final List<double[]> data,
+			final List<Tuple> bgPair, final int[] param, final int Algorithm) {
+		final ExecutorService exec = Executors.newFixedThreadPool(1);
+
+		Callable<List<double[]>> call = new Callable<List<double[]>>() {
+			public List<double[]> call() throws Exception {
+				List<double[]> result = new ArrayList<double[]>();
+				for (double[] r : data)
+					result.add(r);
+
+				switch (Algorithm) {
+				case TRT:
+					add(result.get(TRT), ta.expTRT(
+							experimentData.getWrongCase(), bgPair,
+							experimentData.getParam(),
+							experimentData.getRightSuite()));
+					break;
+				case AUGCHAIN:
+					add(result.get(AUGCHAIN), ta.expAugChain(
+							experimentData.getWrongCase(), bgPair,
+							experimentData.getParam(),
+							experimentData.getRightSuite()));
+					break;
+				case AUGTRT:
+					add(result.get(AUGTRT), ta.expAUGTRT(
+							experimentData.getWrongCase(), bgPair,
+							experimentData.getParam(),
+							experimentData.getRightSuite()));
+					break;
+				case AUGFEEDBACK:
+					add(result.get(AUGFEEDBACK), ta.expChainAugFeedBack(
+							experimentData.getWrongCase(), bgPair,
+							experimentData.getParam(),
+							experimentData.getRightSuite()));
+					break;
+				case FIC:
+					add(result.get(FIC), ta.expFIC(
+							experimentData.getWrongCase(), bgPair,
+							experimentData.getParam()));
+					break;
+				case RI:
+					add(result.get(RI), ta.expRI(experimentData.getWrongCase(),
+							bgPair, experimentData.getParam()));
+					break;
+				case OFOT:
+					add(result.get(OFOT), ta.expOFOT(
+							experimentData.getWrongCase(), bgPair,
+							experimentData.getParam()));
+					break;
+				case LG:
+					add(result.get(LG), ta.expLocateGraph(experimentData
+							.getWrongCase(), bgPair, experimentData.getParam(),
+							experimentData.getRightSuite().getAt(0)));
+					break;
+				case SP:
+					add(result.get(SP), ta.expSpectrumBased(
+							experimentData.getWrongCase(), bgPair, param,
+							bgPair.get(0).getDegree()));
+					break;
+				case AIFL:
+					add(result.get(AIFL), ta.expIterAIFL(
+							experimentData.getWrongCase(), bgPair,
+							experimentData.getParam()));
+					break;
+				case CTA:
+					add(result.get(CTA), ta.expCTA(
+							experimentData.getWrongCase(), bgPair, param));
+					break;
+				}
+				return result;
+			}
+		};
+		List<double[]> result = data;
+		try {
+			Future<List<double[]>> future = exec.submit(call);
+			result = future.get(1000 * 1, TimeUnit.MILLISECONDS);
+		} catch (TimeoutException ex) {
+			ex.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		exec.shutdown();
+		return result;
 	}
 
 	public void outputResult(List<double[]> data, int id) {
@@ -165,6 +234,8 @@ public class SimulateBatchTestByFreeK {
 
 	public static void main(String[] args) {
 		SimulateBatchTestByFreeK fk = new SimulateBatchTestByFreeK();
-		fk.batchTest(new int[] {  8 , 9 , 10 , 12 , 15 , 20 , 30 , 40 , 60, 100 }, 10,2 );
+		fk.batchTest(new int[] { 8, 9, 10 }, 10, 2);
+		// fk.batchTest(new int[] { 8 , 9 , 10 , 12 , 15 , 20 , 30 , 40 , 60,
+		// 100 }, 10,2 );
 	}
 }
