@@ -17,11 +17,13 @@ import com.fc.testObject.TestSuiteImplement;
 import com.fc.tuple.Tuple;
 
 public class SpectrumBased {
+
+	public int RESULTNUMBER = 5;
+	public int TOPNUMBER = 50;
+	public int ITERATENUMBER = 200;
+
 	private List<Tuple> failure_inducing;
-	public static int RESULTNUMBER = 5;
-	public static int TOPNUMBER = 50;
-	public static int ITERATENUMBER = 200;
-	protected CaseRunner caseRunner;
+	private CaseRunner caseRunner;
 	private TestSuite addtionalSuite;
 
 	public SpectrumBased(CaseRunner caseRunner) {
@@ -31,13 +33,17 @@ public class SpectrumBased {
 	}
 
 	public void process(TestSuite suite, int[] parameters, int degree) {
-		TestSuite iteratSuite = suite;
+		TestSuite iteratSuite = new TestSuiteImplement();
+		for (int i = 0; i < suite.getTestCaseNum(); i++) {
+			// System.out.println(suite.getAt(i).getStringOfTest());
+			iteratSuite.addTest(suite.getAt(i));
+		}
 		// for(int i = 0 ; i < iteratSuite.getTestCaseNum() ; i ++)
 		// System.out.println(iteratSuite.getAt(i).getStringOfTest());
 		List<Tuple> pi = new ArrayList<Tuple>();
 		List<Tuple> tway = getTwayTuplesInTestSuite(iteratSuite, degree);
-		tway = this.removeInPassed(tway, suite);
-		tway = this.rank(tway, suite);
+		tway = this.removeInPassed(tway, iteratSuite);
+		tway = this.rank(tway, iteratSuite);
 
 		// for (Tuple tuple : tway) {
 		// System.out.println(tuple.toString());
@@ -46,16 +52,17 @@ public class SpectrumBased {
 		while (true) {
 			if (tway.size() != 0 && (tway.size() < pi.size() || pi.size() == 0)) {
 				pi = tway;
-				TestSuite iterator = this.generateSuite(parameters, suite, pi);
+				TestSuite iterator = this.generateSuite(parameters,
+						iteratSuite, pi);
 				if (iterator == null) // marked find failure-inducing;
 					return;
 				else {
 					execute(iterator);
 					tway = this.removeInPassed(tway, iterator);
 					for (int i = 0; i < iterator.getTestCaseNum(); i++) {
-						suite.addTest(iterator.getAt(i));
+						iteratSuite.addTest(iterator.getAt(i));
 					}
-					tway = this.rank(tway, suite);
+					tway = this.rank(tway, iteratSuite);
 				}
 			} else if (tway.size() == 0) {
 				return;
@@ -67,7 +74,7 @@ public class SpectrumBased {
 				break;
 			}
 		}
-		failure_inducing = this.reduce(failure_inducing, suite, degree);
+		failure_inducing = this.reduce(failure_inducing, iteratSuite, degree);
 	}
 
 	public void execute(TestSuite suite) {
@@ -419,45 +426,48 @@ public class SpectrumBased {
 		TestSuite suite = new TestSuiteImplement();
 		int[] parameters = new int[] { 3, 3, 3, 3, 3, 3, 3, 3 };
 
-		for (int i = 0; i < cases.length; i++) {
-			int[] testCase = cases[i];
+		for (int j = 0; j < cases.length; j++) {
+			int[] testCase = cases[j];
 			TestCase Case = new TestCaseImplement();
 			((TestCaseImplement) Case).setTestCase(testCase);
-			if (i == 0) {
+			if (j == 0) {
 				Case.setTestState(TestCase.FAILED);
 				suite.addTest(Case);
 			} else
 				Case.setTestState(TestCase.PASSED);
 			// suite.addTest(Case);
 		}
+		//
+		// Tuple bugModel1 = new Tuple(2, suite.getAt(0));
+		// bugModel1.set(0, 2);
+		// bugModel1.set(1, 4);
+		for (int i = 0; i < 8; i++) {
 
-		Tuple bugModel1 = new Tuple(2, suite.getAt(0));
-		bugModel1.set(0, 2);
-		bugModel1.set(1, 4);
+			Tuple bugModel2 = new Tuple(1, suite.getAt(0));
+			bugModel2.set(0, i);
+			// System.out.println(bugModel2.toString());
 
-		Tuple bugModel2 = new Tuple(1, suite.getAt(0));
-		bugModel2.set(0, 3);
+			CaseRunner caseRunner = new CaseRunnerWithBugInject();
+			// ((CaseRunnerWithBugInject) caseRunner).inject(bugModel1);
+			((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
 
-		CaseRunner caseRunner = new CaseRunnerWithBugInject();
-		((CaseRunnerWithBugInject) caseRunner).inject(bugModel1);
-		 ((CaseRunnerWithBugInject) caseRunner).inject(bugModel2);
+			SpectrumBased sp = new SpectrumBased(caseRunner);
 
-		SpectrumBased sp = new SpectrumBased(caseRunner);
+			sp.process(suite, parameters, 4);
 
-		sp.process(suite, parameters, 4);
-
-		if (sp.failure_inducing == null)
-			System.out.println("no t way failure inducing tuples:");
-		else {
-			System.out.println("failure inducing tuples:");
-			for (Tuple tuple : sp.failure_inducing) {
-				System.out.println(tuple.toString());
+			if (sp.failure_inducing == null)
+				System.out.println("no t way failure inducing tuples:");
+			else {
+				System.out.println("failure inducing tuples:");
+				for (Tuple tuple : sp.failure_inducing) {
+					System.out.println(tuple.toString());
+				}
 			}
 		}
-		System.out.println("addtional:");
-		for (int i = 0; i < sp.addtionalSuite.getTestCaseNum(); i++) {
-			System.out.println(sp.addtionalSuite.getAt(i).getStringOfTest());
-		}
+		// System.out.println("addtional:");
+		// for (int i = 0; i < sp.addtionalSuite.getTestCaseNum(); i++) {
+		// System.out.println(sp.addtionalSuite.getAt(i).getStringOfTest());
+		// }
 	}
 
 	public void test1() {

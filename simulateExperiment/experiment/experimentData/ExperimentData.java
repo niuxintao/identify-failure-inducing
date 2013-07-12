@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.fc.caseRunner.CaseRunner;
 import com.fc.caseRunner.CaseRunnerWithBugInject;
+import com.fc.model.SpectrumBased;
 import com.fc.testObject.TestCase;
 import com.fc.testObject.TestCaseImplement;
 import com.fc.testObject.TestSuite;
+import com.fc.testObject.TestSuiteImplement;
 import com.fc.tuple.CorpTupleWithTestCase;
 import com.fc.tuple.Tuple;
 
@@ -210,6 +212,31 @@ public class ExperimentData {
 			}
 		}
 		return result;
+	}
+
+	public static void main(String[] args) {
+		DataBaseOfTestCase casedata = new DataBaseOfTestCase(8, 10);
+		ExperimentData experimentData = new ExperimentData(casedata);
+		//System.out.println(experimentData.getWrongCase().getStringOfTest());
+		for (int i = 1; i < 9; i++) {
+			List<Tuple> tuples = experimentData.generateBugByDegree(i);
+			for (Tuple tuple : tuples) {
+				CaseRunner caseRunner = new CaseRunnerWithBugInject();
+				((CaseRunnerWithBugInject) caseRunner).inject(tuple);
+				SpectrumBased sp = new SpectrumBased(caseRunner);
+				TestSuite suite = new TestSuiteImplement();
+				suite.addTest(experimentData.getWrongCase());
+
+				// setting 4
+				System.out.println(experimentData.getWrongCase().getStringOfTest());
+				System.out.println(tuple.toString());
+			
+				sp.process(suite, experimentData.getParam(), 4);
+				for(Tuple tu : sp.getFailreIndcuing())
+					System.out.println(tu.toString());
+			}
+			System.out.println();
+		}
 	}
 
 }

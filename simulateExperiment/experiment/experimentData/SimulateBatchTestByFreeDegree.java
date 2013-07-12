@@ -115,8 +115,7 @@ public class SimulateBatchTestByFreeDegree {
 
 			// sp set 4 degree
 			add(data.get(SP), ta.expSpectrumBased(
-					experimentData.getWrongCase(), bgPair, param,  bgPair.get(0)
-					.getDegree()));
+					experimentData.getWrongCase(), bgPair, param,  4));
 			add(data.get(AIFL), ta.expIterAIFL(experimentData.getWrongCase(),
 					bgPair, experimentData.getParam()));
 			try {
